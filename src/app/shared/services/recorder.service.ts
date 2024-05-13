@@ -91,7 +91,7 @@ export class RecorderService {
   private initAudioContext(): Promise<void> {
     this.context = new AudioContext();
 
-    return this.context.audioWorklet.addModule('/assets/relay-worklet.js');
+    return this.context.audioWorklet.addModule('assets/relay-worklet.js');
   }
 
   private startMic(callback: Function): void {
