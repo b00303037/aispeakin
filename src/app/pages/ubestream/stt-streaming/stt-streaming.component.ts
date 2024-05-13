@@ -73,7 +73,32 @@ export class SttStreamingComponent implements OnDestroy {
       )
       .subscribe();
 
-    // TODO: handle param (candidates, main_lang, target_lang, log_name) change
+    this.route.queryParamMap
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((queryParamMap) => {
+          const [candidates, main_lang, target_lang, log_name] = [
+            'candidates',
+            'main_lang',
+            'target_lang',
+            'log_name',
+          ].map((key) => queryParamMap.get(key));
+
+          if (typeof candidates === 'string') {
+            this.recorderService.candidates = candidates.split(',');
+          }
+          if (typeof main_lang === 'string') {
+            this.recorderService.main_lang = main_lang;
+          }
+          if (typeof target_lang === 'string') {
+            this.recorderService.target_lang = target_lang;
+          }
+          if (typeof log_name === 'string') {
+            this.recorderService.log_name = log_name;
+          }
+        })
+      )
+      .subscribe();
 
     // TODO: test
     // this.test();

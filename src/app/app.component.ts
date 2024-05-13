@@ -1,6 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { Subject, filter, skip, takeUntil, tap } from 'rxjs';
+import {
+  Subject,
+  distinctUntilChanged,
+  filter,
+  skip,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Lang } from './shared/enums/lang.enum';
@@ -28,6 +35,7 @@ export class AppComponent implements OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         skip(1),
+        distinctUntilChanged(),
         filter((_loggedIn) => !_loggedIn),
         tap(() => {
           this.router.navigate(['/home']);
@@ -39,6 +47,7 @@ export class AppComponent implements OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         skip(1),
+        distinctUntilChanged(),
         tap((_theme) => {
           if (_theme !== undefined) {
             localStorage['theme'] = _theme;

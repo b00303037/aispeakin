@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
 // @angular/material
@@ -91,6 +91,7 @@ export class RecordingBarComponent implements OnDestroy {
     this.recorderService.recording$
       .pipe(
         takeUntil(this.destroy$),
+        distinctUntilChanged(),
         tap((recording) => (this.recording = recording))
       )
       .subscribe();
