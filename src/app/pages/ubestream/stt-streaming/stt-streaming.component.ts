@@ -1,7 +1,14 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, map, takeUntil, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, combineLatest, debounceTime, takeUntil, tap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
 //@angular/material
@@ -46,17 +53,20 @@ import { STTStreamingService } from '../../../shared/services/stt-streaming.serv
   templateUrl: './stt-streaming.component.html',
   styleUrl: './stt-streaming.component.scss',
 })
-export class SttStreamingComponent implements OnDestroy {
+export class SttStreamingComponent implements AfterViewInit, OnDestroy {
+  private viewInit$ = new Subject<null>();
   private destroy$ = new Subject<null>();
   private _SMQueryListener = () => this.changeDetectorRef.detectChanges();
   private _MDQueryListener = () => this.changeDetectorRef.detectChanges();
+
+  @ViewChild('messageBoxEl') messageBoxEl?: ElementRef;
 
   SMQuery: MediaQueryList = this.media.matchMedia('(min-width: 600px)');
   MDQuery: MediaQueryList = this.media.matchMedia('(min-width: 960px)');
 
   messageList$ = this.STTStreamingService.messageList$;
 
-  mode?: Mode;
+  mode = Mode.DesktopSingle;
   modeObj = MODE_OBJ;
 
   // TODO: icons for modes
@@ -123,16 +133,27 @@ export class SttStreamingComponent implements OnDestroy {
       )
       .subscribe();
 
-    this.STTStreamingService.messageList$
+    combineLatest([this.viewInit$, this.STTStreamingService.messageList$])
       .pipe(
+        takeUntil(this.destroy$),
+        debounceTime(50),
         tap(() => {
-          // TODO: scroll to bottom
+          setTimeout(() => {
+            const el = this.messageBoxEl?.nativeElement as HTMLElement;
+
+            el.scrollTop = el.scrollHeight;
+          });
         })
       )
       .subscribe();
 
     // TODO: test
     // this.test();
+  }
+
+  ngAfterViewInit(): void {
+    this.viewInit$.next(null);
+    this.viewInit$.complete();
   }
 
   test(): void {
@@ -185,6 +206,18 @@ export class SttStreamingComponent implements OnDestroy {
         { prefix, main_lang }
       );
     }, 12000);
+
+    setTimeout(() => {
+      this.STTStreamingService.addOrUpdate(
+        {
+          message_index: 3,
+          language: 'zh',
+          text: '今天天氣真好。',
+          translated_text: "It' a beautiful day today.",
+        },
+        { prefix, main_lang }
+      );
+    }, 15000);
   }
 
   onBreakpoints(breakpoints: { [key: string]: boolean }) {
