@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
@@ -15,7 +14,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   BreakpointObserver,
   Breakpoints,
-  MediaMatcher,
 } from '@angular/cdk/layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -56,13 +54,11 @@ import { STTStreamingService } from '../../../shared/services/stt-streaming.serv
 export class SttStreamingComponent implements AfterViewInit, OnDestroy {
   private viewInit$ = new Subject<null>();
   private destroy$ = new Subject<null>();
-  private _SMQueryListener = () => this.changeDetectorRef.detectChanges();
-  private _MDQueryListener = () => this.changeDetectorRef.detectChanges();
 
   @ViewChild('messageBoxEl') messageBoxEl?: ElementRef;
 
-  SMQuery: MediaQueryList = this.media.matchMedia('(min-width: 600px)');
-  MDQuery: MediaQueryList = this.media.matchMedia('(min-width: 960px)');
+  SMQueryMatches = true;
+  MDQueryMatches = true;
 
   messageList$ = this.STTStreamingService.messageList$;
 
@@ -95,25 +91,12 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
   dateFnsFormatStr = 'PPpp';
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private media: MediaMatcher,
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private authService: AuthService,
     private STTStreamingService: STTStreamingService,
     private recorderService: RecorderService
   ) {
-    this.SMQuery.addEventListener('change', this._SMQueryListener);
-    this.MDQuery.addEventListener('change', this._MDQueryListener);
-
-    this.breakpointObserver
-      .observe([Breakpoints.Small, Breakpoints.Medium])
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((result) => this.onBreakpoints(result.breakpoints))
-      )
-      .subscribe();
-
     const { APIKey } = this.route.snapshot.data as RouteData;
 
     if ((APIKey ?? '').length === 0) {
@@ -123,6 +106,18 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
     } else {
       this.recorderService.APIKey = APIKey;
     }
+
+    this.breakpointObserver
+      .observe([Breakpoints.Small, Breakpoints.Medium])
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((result) => {
+          this.SMQueryMatches = result.breakpoints[Breakpoints.Small];
+          this.MDQueryMatches = result.breakpoints[Breakpoints.Medium];
+        }),
+        tap((result) => this.onBreakpoints(result.breakpoints))
+      )
+      .subscribe();
 
     // TODO: handle param (candidates, main_lang, target_lang, log_name) change
 
@@ -148,7 +143,7 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
       .subscribe();
 
     // TODO: test
-    this.test();
+    // this.test();
   }
 
   ngAfterViewInit(): void {
@@ -270,9 +265,6 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(null);
     this.destroy$.complete();
-
-    this.SMQuery.removeEventListener('change', this._SMQueryListener);
-    this.MDQuery.removeEventListener('change', this._MDQueryListener);
 
     this.recorderService.stopRecording();
   }

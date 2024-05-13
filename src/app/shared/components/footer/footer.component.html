@@ -1,0 +1,56 @@
+<footer class="relative bg-light dark:bg-darkest">
+  <div class="w-page px-2">
+    <div
+      [ngClass]="SMQuery.matches ? 'flex-row' : 'flex-col'"
+      class="w-full flex py-8"
+    >
+      <div class="w-full flex justify-center items-center my-2">
+        <img
+          [ngClass]="SMQuery.matches ? 'h-12' : 'h-9'"
+          class="w-auto"
+          width="auto"
+          [height]="SMQuery.matches ? 48 : 36"
+          src="assets/Ubestream.png"
+          alt="Ubestream"
+        />
+      </div>
+
+      <div class="w-full flex justify-center items-center my-2">
+        <ul class="text-gray-700 dark:text-gray-300">
+          <li class="flex items-center my-2">
+            <mat-icon class="scale-75 mr-2">place</mat-icon>
+            <a
+              href="https://www.google.com.tw/maps/place/環球睿視股份有限公司/@25.0774534,121.5700383,17z/data=!3m1!4b1!4m6!3m5!1s0x3442ac64c1f11cc5:0xd0978425997fbbf0!8m2!3d25.0774535!4d121.5749092!16s%2Fg%2F11j8dxw446"
+              target="_blank"
+              >台北市內湖區瑞光路 335 號 7 樓</a
+            >
+          </li>
+
+          <li class="flex items-center my-2">
+            <mat-icon class="scale-75 mr-2">phone</mat-icon>
+            <a href="tel:0287515176" target="_blank">(02) 8751-5176</a>
+          </li>
+
+          <li class="flex items-center my-2">
+            <mat-icon class="scale-75 mr-2">alternate_email</mat-icon>
+            <a href="mailto:service@ubestream.com">service&#64;ubestream.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex pb-4">
+      <span class="grow"></span>
+
+      <span class="text-xs text-gray-700 font-normal dark:text-gray-300"
+        >Copyright © 2024 Ubestream Inc. All Rights Reserved.</span
+      >
+
+      <span class="grow"></span>
+    </div>
+  </div>
+
+  <span class="absolute right-0 bottom-0 text-xs text-gray-500 p-1"
+    >v{{ version }}</span
+  >
+</footer>

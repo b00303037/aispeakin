@@ -4,7 +4,7 @@
 <app-header></app-header>
 
 <div
-  [ngClass]="SMQuery.matches ? 'py-[64px]' : 'py-[56px]'"
+  [ngClass]="SMQueryMatches ? 'py-[64px]' : 'py-[56px]'"
   class="w-full h-screen"
 >
   <div #messageBoxEl class="h-full overflow-y-auto">
@@ -77,7 +77,7 @@
       type="button"
       [ngClass]="{ 'bg-accent text-white': item.value === mode }"
       [disabled]="
-        (item.value === modeObj.DesktopDouble && !MDQuery.matches) ||
+        (item.value === modeObj.DesktopDouble && !MDQueryMatches) ||
         item.value === modeObj.Mobile
       "
       mat-menu-item

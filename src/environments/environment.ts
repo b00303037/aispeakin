@@ -7,6 +7,7 @@ const apiVersion = 1;
 export const environment = {
   mock: false,
   production: false,
+  version: 0,
 
   /* FOR LOCAL API */
   // baseApiUrl: `https://localhost:44312/api/v${apiVersion}`,

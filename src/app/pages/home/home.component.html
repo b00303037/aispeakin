@@ -65,6 +65,8 @@
             </div>
 
             @if (service.featureList.length) {
+            <div class="w-full h-px bg-dark my-6 dark:bg-light"></div>
+
             <ul class="text-gray-700 my-2 dark:text-gray-300">
               <ng-template
                 ngFor
@@ -83,10 +85,12 @@
             }
           </div>
 
-          <div class="w-full flex justify-center items-center my-2 px-2">
+          <div
+            [ngClass]="{ 'px-2': MDQuery.matches }"
+            class="w-full flex justify-center items-center my-2"
+          >
             <div
-              [ngClass]="{ 'max-h-64': !SMQuery.matches }"
-              class="w-full max-w-sm border-4 border-solid border-accent rounded-lg m-auto p-2"
+              class="w-full max-w-90 border-4 border-solid border-accent rounded-lg m-auto p-2"
             >
               <img
                 class="w-full h-auto rounded-lg bg-white"
@@ -98,7 +102,7 @@
           </div>
         </div></section
     ></ng-template>
-  </div>
 
-  <!-- TODO: footer -->
+    <app-footer></app-footer>
+  </div>
 </div>

@@ -9,6 +9,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MatButtonModule } from '@angular/material/button';
 
 import { HeaderComponent } from '../../shared/components/header/header.component';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ import { HeaderComponent } from '../../shared/components/header/header.component
     TranslateModule,
     MatButtonModule,
     HeaderComponent,
+    FooterComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -45,17 +47,17 @@ export class HomeComponent implements OnDestroy {
     {
       prefix: 'HOME.SERVICE_1.',
       featureList: ['FEATURE_1', 'FEATURE_2', 'FEATURE_3', 'FEATURE_4'],
-      imgSrc: 'assets/home/service_1.jpg',
+      imgSrc: 'assets/home/service_1.png',
     },
     {
       prefix: 'HOME.SERVICE_2.',
       featureList: ['FEATURE_1', 'FEATURE_2'],
-      imgSrc: 'assets/home/service_2.jpg',
+      imgSrc: 'assets/home/service_2.png',
     },
     {
       prefix: 'HOME.SERVICE_3.',
       featureList: ['FEATURE_1', 'FEATURE_2'],
-      imgSrc: 'assets/home/service_3.jpg',
+      imgSrc: 'assets/home/service_3.png',
     },
   ];
 
