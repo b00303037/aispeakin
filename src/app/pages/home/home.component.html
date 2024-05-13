@@ -2,10 +2,10 @@
 
 <div
   [ngClass]="SMQuery.matches ? 'pt-[64px]' : 'pt-[56px]'"
-  class="w-full h-screen"
+  class="w-full h-dvh"
 >
   <div class="h-full overflow-y-auto">
-    <section class="w-full h-auto min-h-screen flex items-center py-4">
+    <section class="w-full h-auto min-h-dvh flex items-center py-4">
       <div class="w-page flex flex-col px-8">
         <span class="grow"></span>
 
@@ -45,7 +45,7 @@
       <section
         [id]="'service-' + i"
         [ngClass]="odd ? 'bg-lighter dark:bg-darker' : 'bg-light dark:bg-dark'"
-        class="w-full h-auto min-h-screen flex items-center py-4"
+        class="w-full h-auto min-h-dvh flex items-center py-4"
       >
         <div
           [ngClass]="MDQuery.matches ? 'flex-row' : 'flex-col'"
