@@ -22,7 +22,7 @@ import { LocaleService } from '../../../../shared/services/locale.service';
 import { STTStreamingService } from '../../../../shared/services/stt-streaming.service';
 
 @Component({
-  selector: 'app-desktop-double',
+  selector: 'app-face-to-face',
   standalone: true,
   imports: [
     AsyncPipe,
@@ -33,10 +33,10 @@ import { STTStreamingService } from '../../../../shared/services/stt-streaming.s
     MessageComponent,
     DateFnsPipe,
   ],
-  templateUrl: './desktop-double.component.html',
-  styleUrl: './desktop-double.component.scss',
+  templateUrl: './face-to-face.component.html',
+  styleUrl: './face-to-face.component.scss',
 })
-export class DesktopDoubleComponent implements AfterViewInit, OnDestroy {
+export class FaceToFaceComponent implements AfterViewInit, OnDestroy {
   private viewInit$ = new Subject<null>();
   private destroy$ = new Subject<null>();
 
@@ -89,7 +89,6 @@ export class DesktopDoubleComponent implements AfterViewInit, OnDestroy {
   }
 
   scrollToLatest(): void {
-    console.log('scrollToLatest()');
     this.messageBoxEls.forEach((el) => (el.scrollTop = el.scrollHeight));
   }
 

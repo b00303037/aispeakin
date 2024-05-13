@@ -6,9 +6,9 @@
   },
   "MODE": {
     "DISPLAY_MODE": "表示モード",
-    "DESKTOP_SINGLE": "一面表示スクリーン",
-    "DESKTOP_DOUBLE": "両面表示スクリーン",
-    "MOBILE": "モバイルデバイス"
+    "SINGLE_SIDED": "一面表示",
+    "DUAL_SIDED": "両面表示",
+    "FACE_TO_FACE": "対面表示"
   },
   "HEADER": {
     "LOGIN": "ログイン",

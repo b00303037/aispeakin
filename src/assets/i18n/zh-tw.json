@@ -6,9 +6,9 @@
   },
   "MODE": {
     "DISPLAY_MODE": "顯示方式",
-    "DESKTOP_SINGLE": "單面螢幕",
-    "DESKTOP_DOUBLE": "雙面螢幕",
-    "MOBILE": "行動裝置"
+    "SINGLE_SIDED": "單面顯示",
+    "DUAL_SIDED": "雙面顯示",
+    "FACE_TO_FACE": "面對面顯示"
   },
   "HEADER": {
     "LOGIN": "登入",

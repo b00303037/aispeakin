@@ -6,10 +6,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
 //@angular/material
 import { BreakpointObserver } from '@angular/cdk/layout';
 
-import { DesktopDoubleComponent } from './desktop-double/desktop-double.component';
+import { DualSidedComponent } from './dual-sided/dual-sided.component';
+import { FaceToFaceComponent } from './face-to-face/face-to-face.component';
 import { RecordingBarComponent } from './recording-bar/recording-bar.component';
-import { DesktopSingleComponent } from './desktop-single/desktop-single.component';
-import { MobileComponent } from './mobile/mobile.component';
+import { SingleSidedComponent } from './single-sided/single-sided.component';
 import { RouteData } from './stt-streaming.models';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { MediaQuery } from '../../../shared/enums/media-query.enum';
@@ -25,10 +25,10 @@ import { STTStreamingService } from '../../../shared/services/stt-streaming.serv
     AsyncPipe,
     NgClass,
     HeaderComponent,
-    DesktopDoubleComponent,
+    DualSidedComponent,
+    FaceToFaceComponent,
     RecordingBarComponent,
-    DesktopSingleComponent,
-    MobileComponent,
+    SingleSidedComponent,
   ],
   templateUrl: './stt-streaming.component.html',
   styleUrl: './stt-streaming.component.scss',
@@ -41,7 +41,7 @@ export class SttStreamingComponent implements OnDestroy {
 
   messageList$ = this.STTStreamingService.messageList$;
 
-  mode = Mode.DesktopSingle;
+  mode = Mode.SingleSided;
   modeObj = MODE_OBJ;
 
   constructor(
@@ -150,16 +150,16 @@ export class SttStreamingComponent implements OnDestroy {
     let _mode: Mode = this.mode;
 
     switch (this.mode) {
-      case Mode.DesktopSingle:
+      case Mode.SingleSided:
         break;
-      case Mode.DesktopDouble:
+      case Mode.DualSided:
         if (ltMD) {
-          _mode = Mode.DesktopSingle;
+          _mode = Mode.SingleSided;
         }
         break;
-      case Mode.Mobile:
+      case Mode.FaceToFace:
         if (ltMD && isLandscape) {
-          _mode = Mode.DesktopSingle;
+          _mode = Mode.SingleSided;
         }
         break;
     }

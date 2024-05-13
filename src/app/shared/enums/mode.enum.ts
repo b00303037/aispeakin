@@ -1,11 +1,11 @@
 export enum Mode {
-  DesktopSingle,
-  DesktopDouble,
-  Mobile,
+  SingleSided,
+  DualSided,
+  FaceToFace,
 }
 
 export const MODE_OBJ = {
-  DesktopSingle: Mode.DesktopSingle,
-  DesktopDouble: Mode.DesktopDouble,
-  Mobile: Mode.Mobile,
+  SingleSided: Mode.SingleSided,
+  DualSided: Mode.DualSided,
+  FaceToFace: Mode.FaceToFace,
 };

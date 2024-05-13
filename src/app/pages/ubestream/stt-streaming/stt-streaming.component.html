@@ -1,7 +1,7 @@
-<app-header [ngClass]="{ hidden: mode === modeObj.Mobile }"></app-header>
+<app-header [ngClass]="{ hidden: mode === modeObj.FaceToFace }"></app-header>
 
 <app-recording-bar
-  [ngClass]="{ hidden: mode !== modeObj.Mobile }"
+  [ngClass]="{ hidden: mode !== modeObj.FaceToFace }"
   [mode]="mode"
   [main]="false"
   (modeEmit)="onModeEmit($event)"
@@ -12,21 +12,17 @@
   class="w-full h-screen"
 >
   <div class="h-full overflow-y-auto">
-    @switch (mode) { @case (modeObj.DesktopSingle) {
+    @switch (mode) { @case (modeObj.SingleSided) {
     <div class="w-page h-full">
-      <app-desktop-single
-        [messageList]="messageList$ | async"
-      ></app-desktop-single>
+      <app-single-sided [messageList]="messageList$ | async"></app-single-sided>
     </div>
-    } @case (modeObj.DesktopDouble) {
+    } @case (modeObj.DualSided) {
     <div class="w-full h-full">
-      <app-desktop-double
-        [messageList]="messageList$ | async"
-      ></app-desktop-double>
+      <app-dual-sided [messageList]="messageList$ | async"></app-dual-sided>
     </div>
-    } @case (modeObj.Mobile) {
+    } @case (modeObj.FaceToFace) {
     <div class="w-full h-full">
-      <app-mobile [messageList]="messageList$ | async"></app-mobile>
+      <app-face-to-face [messageList]="messageList$ | async"></app-face-to-face>
     </div>
     } }
   </div>

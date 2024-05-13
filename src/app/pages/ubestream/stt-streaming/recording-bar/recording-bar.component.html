@@ -56,8 +56,8 @@
       type="button"
       [ngClass]="{ 'bg-accent text-white': item.value === mode }"
       [disabled]="
-        (item.value === modeObj.DesktopDouble && !MDQueryMatches) ||
-        (item.value === modeObj.Mobile &&
+        (item.value === modeObj.DualSided && !MDQueryMatches) ||
+        (item.value === modeObj.FaceToFace &&
           !MDQueryMatches &&
           landscapeQueryMatches)
       "
@@ -67,7 +67,7 @@
       <mat-icon
         [ngClass]="{
           'text-white': item.value === mode,
-          'rotate-90': item.value === modeObj.DesktopDouble
+          'rotate-90': item.value === modeObj.DualSided
         }"
         >{{ item.icon }}</mat-icon
       >

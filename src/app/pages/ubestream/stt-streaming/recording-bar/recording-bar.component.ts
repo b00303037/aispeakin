@@ -54,19 +54,19 @@ export class RecordingBarComponent implements OnDestroy {
   modeObj = MODE_OBJ;
   modeMenuItemList = [
     {
-      label: 'MODE.DESKTOP_SINGLE',
-      value: Mode.DesktopSingle,
+      label: 'MODE.SINGLE_SIDED',
+      value: Mode.SingleSided,
       icon: 'crop_square',
     },
     {
-      label: 'MODE.DESKTOP_DOUBLE',
-      value: Mode.DesktopDouble,
+      label: 'MODE.DUAL_SIDED',
+      value: Mode.DualSided,
       icon: 'splitscreen',
     },
     {
-      label: 'MODE.MOBILE',
-      value: Mode.Mobile,
-      icon: 'smartphone',
+      label: 'MODE.FACE_TO_FACE',
+      value: Mode.FaceToFace,
+      icon: 'splitscreen',
     },
   ];
 

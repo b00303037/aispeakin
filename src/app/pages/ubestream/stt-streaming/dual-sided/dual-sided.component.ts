@@ -22,7 +22,7 @@ import { LocaleService } from '../../../../shared/services/locale.service';
 import { STTStreamingService } from '../../../../shared/services/stt-streaming.service';
 
 @Component({
-  selector: 'app-mobile',
+  selector: 'app-dual-sided',
   standalone: true,
   imports: [
     AsyncPipe,
@@ -33,10 +33,10 @@ import { STTStreamingService } from '../../../../shared/services/stt-streaming.s
     MessageComponent,
     DateFnsPipe,
   ],
-  templateUrl: './mobile.component.html',
-  styleUrl: './mobile.component.scss',
+  templateUrl: './dual-sided.component.html',
+  styleUrl: './dual-sided.component.scss',
 })
-export class MobileComponent implements AfterViewInit, OnDestroy {
+export class DualSidedComponent implements AfterViewInit, OnDestroy {
   private viewInit$ = new Subject<null>();
   private destroy$ = new Subject<null>();
 
@@ -89,7 +89,6 @@ export class MobileComponent implements AfterViewInit, OnDestroy {
   }
 
   scrollToLatest(): void {
-    console.log('scrollToLatest()');
     this.messageBoxEls.forEach((el) => (el.scrollTop = el.scrollHeight));
   }
 

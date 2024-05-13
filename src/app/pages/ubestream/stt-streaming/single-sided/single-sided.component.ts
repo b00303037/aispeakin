@@ -16,13 +16,13 @@ import { LocaleService } from '../../../../shared/services/locale.service';
 import { STTStreamingService } from '../../../../shared/services/stt-streaming.service';
 
 @Component({
-  selector: 'app-desktop-single',
+  selector: 'app-single-sided',
   standalone: true,
   imports: [AsyncPipe, NgFor, MessageComponent],
-  templateUrl: './desktop-single.component.html',
-  styleUrl: './desktop-single.component.scss',
+  templateUrl: './single-sided.component.html',
+  styleUrl: './single-sided.component.scss',
 })
-export class DesktopSingleComponent implements AfterViewInit, OnDestroy {
+export class SingleSidedComponent implements AfterViewInit, OnDestroy {
   private viewInit$ = new Subject<null>();
   private destroy$ = new Subject<null>();
 
