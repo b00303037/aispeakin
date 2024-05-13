@@ -124,9 +124,6 @@ module.exports = {
         xl: "1920px", // 120rem
         "10/12": "83.333333%",
       },
-      spacing: {
-        150: "600px", // 37.5rem
-      },
     },
     fontWeight: {
       light: 300,

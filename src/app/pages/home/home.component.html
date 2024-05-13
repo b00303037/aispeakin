@@ -1,83 +1,104 @@
 <app-header></app-header>
 
-<section class="w-full min-h-screen flex items-center">
-  <div class="w-page flex flex-col px-8">
-    <span class="grow"></span>
-
-    <div class="text-4xl text-goldenrod my-4">
-      {{ "HOME.TITLE" | translate }}
-    </div>
-    <div class="text-4xl my-4">
-      {{ "HOME.SUB_TITLE" | translate }}
-    </div>
-
-    <ul class="flex flex-wrap my-4">
-      <ng-template ngFor let-service let-i="index" [ngForOf]="serviceList">
-        <li class="m-2">
-          <button
-            type="button"
-            mat-flat-button
-            color="primary"
-            (click)="scrollTo('service-' + i)"
-          >
-            {{ service.prefix + "NAME" | translate }}
-          </button>
-        </li>
-      </ng-template>
-    </ul>
-
-    <span class="grow"></span>
-  </div>
-</section>
-
-<ng-template
-  ngFor
-  let-service
-  let-i="index"
-  let-odd="odd"
-  [ngForOf]="serviceList"
+<div
+  [ngClass]="SMQuery.matches ? 'pt-[64px]' : 'pt-[56px]'"
+  class="w-full h-screen"
 >
-  <section
-    [id]="'service-' + i"
-    [ngClass]="odd ? 'bg-lighter dark:bg-darker' : 'bg-light dark:bg-dark'"
-    class="w-full h-screen min-h-150"
-  >
-    <div class="w-page h-full px-8">
-      <div class="h-full flex flex-col justify-center">
-        <div class="text-xl text-goldenrod my-2">
-          {{ service.prefix + "SLOGAN" | translate }}
+  <div class="h-full overflow-y-auto">
+    <section class="w-full h-auto min-h-screen flex items-center py-4">
+      <div class="w-page flex flex-col px-8">
+        <span class="grow"></span>
+
+        <div class="text-4xl text-goldenrod my-4">
+          {{ "HOME.TITLE" | translate }}
+        </div>
+        <div class="text-4xl my-4">
+          {{ "HOME.SUB_TITLE" | translate }}
         </div>
 
-        <div class="text-4xl my-2">
-          {{ service.prefix + "NAME" | translate }}
-        </div>
-
-        <div class="text-base text-gray-700 my-2 dark:text-gray-300">
-          {{ service.prefix + "DESC" | translate }}
-        </div>
-
-        @if (service.featureList.length) {
-        <div class="w-full h-px bg-dark my-4 dark:bg-light"></div>
-
-        <ul class="text-gray-700 my-2 dark:text-gray-300">
-          <ng-template
-            ngFor
-            let-feature
-            let-last="last"
-            [ngForOf]="service.featureList"
-          >
-            <li
-              [ngClass]="{ 'mb-0': last }"
-              class="border-l-4 border-solid border-accent mb-4 pl-2"
-            >
-              {{ service.prefix + feature | translate }}
+        <ul class="flex flex-wrap my-4">
+          <ng-template ngFor let-service let-i="index" [ngForOf]="serviceList">
+            <li class="m-2">
+              <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="scrollTo('service-' + i)"
+              >
+                {{ service.prefix + "NAME" | translate }}
+              </button>
             </li>
           </ng-template>
         </ul>
-        }
-      </div>
-    </div>
-  </section></ng-template
->
 
-<!-- TODO: footer -->
+        <span class="grow"></span>
+      </div>
+    </section>
+
+    <ng-template
+      ngFor
+      let-service
+      let-i="index"
+      let-odd="odd"
+      [ngForOf]="serviceList"
+    >
+      <section
+        [id]="'service-' + i"
+        [ngClass]="odd ? 'bg-lighter dark:bg-darker' : 'bg-light dark:bg-dark'"
+        class="w-full h-auto min-h-screen flex items-center py-4"
+      >
+        <div
+          [ngClass]="MDQuery.matches ? 'flex-row' : 'flex-col'"
+          class="w-page flex px-8"
+        >
+          <div class="w-full flex flex-col justify-center">
+            <div class="text-xl text-goldenrod my-2">
+              {{ service.prefix + "SLOGAN" | translate }}
+            </div>
+
+            <div class="text-4xl my-2">
+              {{ service.prefix + "NAME" | translate }}
+            </div>
+
+            <div class="text-base text-gray-700 my-2 dark:text-gray-300">
+              {{ service.prefix + "DESC" | translate }}
+            </div>
+
+            @if (service.featureList.length) {
+            <ul class="text-gray-700 my-2 dark:text-gray-300">
+              <ng-template
+                ngFor
+                let-feature
+                let-last="last"
+                [ngForOf]="service.featureList"
+              >
+                <li
+                  [ngClass]="{ 'mb-0': last }"
+                  class="border-l-4 border-solid border-accent mb-4 pl-2"
+                >
+                  {{ service.prefix + feature | translate }}
+                </li>
+              </ng-template>
+            </ul>
+            }
+          </div>
+
+          <div class="w-full flex justify-center items-center my-2 px-2">
+            <div
+              [ngClass]="{ 'max-h-64': !SMQuery.matches }"
+              class="w-full max-w-sm border-4 border-solid border-accent rounded-lg m-auto p-2"
+            >
+              <img
+                class="w-full h-auto rounded-lg bg-white"
+                height="auto"
+                [src]="service.imgSrc"
+                [alt]="service.prefix + 'NAME' | translate"
+              />
+            </div>
+          </div>
+        </div></section
+    ></ng-template>
+  </div>
+
+  <!-- TODO: footer -->
+</div>
