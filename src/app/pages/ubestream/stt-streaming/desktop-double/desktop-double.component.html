@@ -1,17 +1,19 @@
 <div class="h-full flex items-stretch">
-  <app-desktop-single
-    class="w-1/2"
-    [dateFnsFormatStr]="dateFnsFormatStr"
-    [messageList]="messageList"
-    [flip]="true"
-  ></app-desktop-single>
+  <div class="w-1/2">
+    <app-desktop-single
+      [dateFnsFormatStr]="dateFnsFormatStr"
+      [messageList]="messageList"
+      [flip]="true"
+    ></app-desktop-single>
+  </div>
 
   <div class="w-px shrink-0 bg-dark my-2 dark:bg-light"></div>
 
-  <app-desktop-single
-    class="w-1/2"
-    [dateFnsFormatStr]="dateFnsFormatStr"
-    [messageList]="messageList"
-    [flip]="false"
-  ></app-desktop-single>
+  <div class="w-1/2">
+    <app-desktop-single
+      [dateFnsFormatStr]="dateFnsFormatStr"
+      [messageList]="messageList"
+      [flip]="false"
+    ></app-desktop-single>
+  </div>
 </div>

@@ -148,7 +148,7 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
       .subscribe();
 
     // TODO: test
-    // this.test();
+    this.test();
   }
 
   ngAfterViewInit(): void {
@@ -261,6 +261,10 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  onClearConversation(): void {
+    this.STTStreamingService.clear();
   }
 
   ngOnDestroy(): void {

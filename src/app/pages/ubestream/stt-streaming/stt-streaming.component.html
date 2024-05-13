@@ -59,9 +59,13 @@
     <div class="w-full flex">
       <span class="grow"></span>
 
-      <button type="button" mat-icon-button color="accent">
+      <button
+        type="button"
+        mat-icon-button
+        color="accent"
+        [matMenuTriggerFor]="actionMenu"
+      >
         <mat-icon>more_horiz</mat-icon>
-        <!-- TODO: 設置語言 & 清除對話 -->
       </button>
     </div>
   </mat-toolbar>
@@ -89,4 +93,18 @@
       <span>{{ item.label | translate }}</span>
     </button>
   </ng-template>
+</mat-menu>
+
+<mat-menu #actionMenu="matMenu">
+  <button
+    class="text-warn"
+    type="button"
+    mat-menu-item
+    [disabled]="((messageList$ | async)?.length ?? 0) === 0"
+    (click)="onClearConversation()"
+  >
+    {{ "STT_STREAMING.CLEAR_CONVERSATION" | translate }}
+  </button>
+
+  <!-- TODO: 設置語言? -->
 </mat-menu>

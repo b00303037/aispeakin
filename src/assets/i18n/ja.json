@@ -61,5 +61,8 @@
       "FEATURE_1": "人格化された音声生成。",
       "FEATURE_2": "複数の言語、複数の声。"
     }
+  },
+  "STT_STREAMING": {
+    "CLEAR_CONVERSATION": "対話をクリア"
   }
 }

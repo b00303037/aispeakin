@@ -61,5 +61,8 @@
       "FEATURE_1": "Personified speech generation.",
       "FEATURE_2": "Multiple languages, multiple voices."
     }
+  },
+  "STT_STREAMING": {
+    "CLEAR_CONVERSATION": "Clear conversation"
   }
 }
