@@ -1,0 +1,65 @@
+{
+  "THEME": {
+    "LIGHT": "淺色",
+    "DARK": "深色",
+    "SYSTEM": "系統"
+  },
+  "MODE": {
+    "DISPLAY_MODE": "顯示方式",
+    "DESKTOP_SINGLE": "單面螢幕",
+    "DESKTOP_DOUBLE": "雙面螢幕",
+    "MOBILE": "行動裝置"
+  },
+  "HEADER": {
+    "LOGIN": "登入",
+    "LOGOUT": "登出",
+    "MY_ACCOUNT": "我的帳號",
+    "SERVICES": "服務"
+  },
+  "LOGIN": {
+    "TITLE": "登入",
+    "USERNAME": "帳號",
+    "PASSWORD": "密碼",
+    "CLEAR": "清除",
+    "HIDE_PASSWORD": "隱藏密碼",
+    "SHOW_PASSWORD": "顯示密碼",
+    "ERROR": {
+      "USERNAME_REQUIRED": "請輸入帳號",
+      "PASSWORD_REQUIRED": "請輸入密碼"
+    }
+  },
+  "HOME": {
+    "TITLE": "自然語意語音辨識",
+    "SUB_TITLE": "轉寫合成服務",
+    "SERVICE_0": {
+      "NAME": "AI母語對話翻譯",
+      "SLOGAN": "面對面溝通不尷尬",
+      "DESC": "上傳影音可翻譯為他國語言，AI引擎處理快速又便利",
+      "FEATURE_1": "影音辨識支援AI翻譯轉寫為多國語言",
+      "FEATURE_2": "影音字幕翻譯同時AI生成時間戳標記"
+    },
+    "SERVICE_1": {
+      "NAME": "會議交談AI自動轉寫紀錄",
+      "SLOGAN": "提交會議紀錄超方便",
+      "DESC": "多人交談語音辨識，自動轉寫為文字；另可生成會議紀錄摘要，大幅降低時間成本",
+      "FEATURE_1": "多人交談語者辨識率超過90%",
+      "FEATURE_2": "會議交談語意語音辨識率超過90%",
+      "FEATURE_3": "操作介面簡易直覺，下載即完成會議紀錄",
+      "FEATURE_4": "若有需要可生成會議交談紀錄摘要"
+    },
+    "SERVICE_2": {
+      "NAME": "AI影片字幕生成",
+      "SLOGAN": "不再熬夜看影片校稿",
+      "DESC": "透過AIspeakin語意語音辨識引擎，精準生成字幕與分割時間戳，正確率高達90%，從此無須辛苦打字與校稿",
+      "FEATURE_1": "快速精準生成",
+      "FEATURE_2": "操作簡易直覺"
+    },
+    "SERVICE_3": {
+      "NAME": "AI文字轉語音",
+      "SLOGAN": "快速擬真助理",
+      "DESC": "AIspeakin擬人化語音生成，支援多國語言並有不同聲音可供選擇。多元擬真的語音朗讀服務，可快速產製Podcast有聲書",
+      "FEATURE_1": "擬人化語音生成",
+      "FEATURE_2": "多國語言，多種聲音"
+    }
+  }
+}

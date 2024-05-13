@@ -1,0 +1,65 @@
+{
+  "THEME": {
+    "LIGHT": "Light",
+    "DARK": "Dark",
+    "SYSTEM": "System"
+  },
+  "MODE": {
+    "DISPLAY_MODE": "Display mode",
+    "DESKTOP_SINGLE": "Single-sided screen",
+    "DESKTOP_DOUBLE": "Double-sided screen",
+    "MOBILE": "Mobile device"
+  },
+  "HEADER": {
+    "LOGIN": "LOGIN",
+    "LOGOUT": "Logout",
+    "MY_ACCOUNT": "My Account",
+    "SERVICES": "Services"
+  },
+  "LOGIN": {
+    "TITLE": "LOGIN",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "CLEAR": "Clear",
+    "HIDE_PASSWORD": "Hide password",
+    "SHOW_PASSWORD": "Show password",
+    "ERROR": {
+      "USERNAME_REQUIRED": "Enter a username",
+      "PASSWORD_REQUIRED": "Enter a password"
+    }
+  },
+  "HOME": {
+    "TITLE": "Natural semantic speech recognition",
+    "SUB_TITLE": "Transcription synthesis service",
+    "SERVICE_0": {
+      "NAME": "Native language AI conversation translation",
+      "SLOGAN": "Face-to-face communication without awkwardness",
+      "DESC": "Uploading audio and video for translation into other languages, with AI engines processing quickly and conveniently",
+      "FEATURE_1": "Audio-visual recognition supports AI translation and transcription into multiple languages.",
+      "FEATURE_2": "Audio-visual subtitle translation simultaneously generates AI-generated timestamp markers."
+    },
+    "SERVICE_1": {
+      "NAME": "AI automatically transcribes records of meeting conversations",
+      "SLOGAN": "Submitting meeting records is super convenient",
+      "DESC": "Multi-person conversation speech recognition, automatically transcribed into text; can also generate meeting record summaries, significantly reducing time costs",
+      "FEATURE_1": "Multi-person conversation speaker recognition rate exceeds 90%.",
+      "FEATURE_2": "Meeting conversation semantic speech recognition rate exceeds 90%.",
+      "FEATURE_3": "The user interface is simple and intuitive, with meeting records downloaded upon completion.",
+      "FEATURE_4": "Summary of meeting conversation records can be generated if needed."
+    },
+    "SERVICE_2": {
+      "NAME": "AI video subtitle generation",
+      "SLOGAN": "No more staying up late for video proofreading",
+      "DESC": "Through the AIspeakin semantic speech recognition engine, accurate subtitles and time stamps are generated, with an accuracy rate of up to 90%, eliminating the need for tedious typing and proofreading",
+      "FEATURE_1": "Fast and accurate generation.",
+      "FEATURE_2": "Simple and intuitive operation."
+    },
+    "SERVICE_3": {
+      "NAME": "AI text-to-speech",
+      "SLOGAN": "Quickly generated lifelike assistant",
+      "DESC": "AIspeakin's personified speech generation supports multiple languages and offers different voices to choose from. Diverse lifelike voice reading services for quickly producing podcasts and audiobooks",
+      "FEATURE_1": "Personified speech generation.",
+      "FEATURE_2": "Multiple languages, multiple voices."
+    }
+  }
+}

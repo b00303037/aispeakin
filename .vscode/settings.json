@@ -1,0 +1,15 @@
+{
+  "cSpell.words": [
+    "AIspeakin",
+    "Headerless",
+    "signin",
+    "splitscreen",
+    "ubestream",
+    "wssapi",
+    "ZHTW"
+  ],
+  "files.associations": {
+    "*.scss": "tailwindcss",
+    "*.css": "tailwindcss"
+  }
+}

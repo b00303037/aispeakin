@@ -1,0 +1,90 @@
+<!-- TODO: Material Design layout: TabletLandscape -->
+<!-- @media only screen and (max-width: 1279.98px) and (orientation: landscape) -->
+
+<div class="w-full min-h-screen flex flex-col">
+  <app-header></app-header>
+
+  <div
+    [ngClass]="SMQuery.matches ? 'my-[64px]' : 'my-[56px]'"
+    class="grow flex"
+  >
+    @switch (mode) { @case (modeObj.DesktopSingle) {
+    <app-desktop-single
+      class="w-page grow"
+      [dateFnsFormatStr]="dateFnsFormatStr"
+      [messageList]="(messageList$ | async) ?? []"
+    ></app-desktop-single>
+    } @case (modeObj.DesktopDouble) {
+    <app-desktop-double
+      class="w-full grow"
+      [dateFnsFormatStr]="dateFnsFormatStr"
+      [messageList]="(messageList$ | async) ?? []"
+    ></app-desktop-double>
+    } @case (modeObj.Mobile) {
+    <div>Mobile</div>
+    } }
+  </div>
+
+  <div class="fixed right-0 bottom-0 left-0 bg-light z-50 dark:bg-darkest">
+    <mat-toolbar class="w-page px-2">
+      <div class="w-full flex">
+        <button
+          type="button"
+          mat-button
+          color="accent"
+          [matMenuTriggerFor]="modeMenu"
+        >
+          {{ "MODE.DISPLAY_MODE" | translate }}
+        </button>
+
+        <span class="grow"></span>
+      </div>
+
+      <div class="shrink-0">
+        <button
+          class="w-12 h-12 border-4 border-solid border-gray-700 rounded-full flex justify-center items-center dark:border-gray-300"
+          type="button"
+          (click)="!recording ? onStartRecording() : onStopRecording()"
+        >
+          <span
+            [ngClass]="!recording ? 'w-8 h-8 rounded-16' : 'w-5 h-5 rounded-4'"
+            class="transition-all bg-red-500"
+          ></span>
+        </button>
+      </div>
+
+      <div class="w-full flex">
+        <span class="grow"></span>
+
+        <button type="button" mat-icon-button color="accent">
+          <mat-icon>more_horiz</mat-icon>
+          <!-- TODO: 設置語言 & 清除對話 -->
+        </button>
+      </div>
+    </mat-toolbar>
+  </div>
+</div>
+
+<mat-menu #modeMenu="matMenu">
+  <ng-template ngFor let-item [ngForOf]="modeMenuItemList">
+    <button
+      type="button"
+      [ngClass]="{ 'bg-accent text-white': item.value === mode }"
+      [disabled]="
+        (item.value === modeObj.DesktopDouble && !MDQuery.matches) ||
+        item.value === modeObj.Mobile
+      "
+      mat-menu-item
+      (click)="onSelectMode(item.value)"
+    >
+      <mat-icon
+        [ngClass]="{
+          'text-white': item.value === mode,
+          'rotate-90': item.value === modeObj.DesktopDouble
+        }"
+        >{{ item.icon }}</mat-icon
+      >
+      <span>{{ item.label | translate }}</span>
+    </button>
+  </ng-template>
+</mat-menu>
