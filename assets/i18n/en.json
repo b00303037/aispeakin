@@ -6,9 +6,9 @@
   },
   "MODE": {
     "DISPLAY_MODE": "Display mode",
-    "DESKTOP_SINGLE": "Single-sided screen",
-    "DESKTOP_DOUBLE": "Double-sided screen",
-    "MOBILE": "Mobile device"
+    "SINGLE_SIDED": "Single-sided",
+    "DUAL_SIDED": "Dual-sided",
+    "FACE_TO_FACE": "Face-to-face"
   },
   "HEADER": {
     "LOGIN": "LOGIN",
