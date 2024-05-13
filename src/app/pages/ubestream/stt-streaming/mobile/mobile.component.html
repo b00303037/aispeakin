@@ -1,5 +1,5 @@
-<div [ngClass]="{ '-scale-x-100': switched }" class="h-full flex items-stretch">
-  <div #messageBox class="w-1/2 -scale-x-100 overflow-y-auto">
+<div [ngClass]="{ 'rotate-180': switched }" class="h-full flex flex-col">
+  <div #messageBox class="h-1/2 -scale-y-100 overflow-y-auto">
     <ng-template
       ngFor
       let-message
@@ -9,28 +9,28 @@
       <app-message
         [message]="message"
         [locale]="locale$ | async"
-        [swapped]="true"
+        [swapped]="false"
       ></app-message>
     </ng-template>
   </div>
 
-  <div class="shrink-0 flex flex-col items-center">
-    <div class="grow w-px bg-dark my-2 dark:bg-light"></div>
+  <div class="shrink-0 flex flex-row items-center my-2">
+    <div class="grow h-px bg-dark mx-2 dark:bg-light"></div>
 
     <button
-      [ngClass]="{ '-scale-x-100': switched }"
+      [ngClass]="{ 'rotate-180': switched }"
       class="shrink-0 shadow-none"
       type="button"
       mat-mini-fab
       (click)="switchRole()"
     >
-      <mat-icon>swap_horiz</mat-icon>
+      <mat-icon>swap_vert</mat-icon>
     </button>
 
-    <div class="grow w-px bg-dark my-2 dark:bg-light"></div>
+    <div class="grow h-px bg-dark mx-2 dark:bg-light"></div>
   </div>
 
-  <div #messageBox class="w-1/2 overflow-y-auto">
+  <div #messageBox class="h-1/2 overflow-y-auto">
     <ng-template
       ngFor
       let-message

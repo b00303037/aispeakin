@@ -1,0 +1,17 @@
+<div [ngClass]="reverse ? 'flex-row-reverse' : 'flex-row'" class="flex">
+  <div class="animate-pulse-once max-w-10/12 p-2">
+    <div
+      class="rounded text-black text-lg bg-light p-2 dark:text-white dark:bg-dark"
+    >
+      <div>{{ message.text }}</div>
+      <div class="text-goldenrod">{{ message.tran }}</div>
+    </div>
+
+    <div
+      [ngClass]="message.role === roleObj.Native ? 'text-end' : 'text-start'"
+      class="text-xs text-gray-700 mt-1 dark:text-gray-300"
+    >
+      {{ message.date | dateFns : dateFnsFormatStr : locale }}
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import {
 export class STTStreamingService {
   // TODO: 以日期分組，減少重複的年月日內容
   messageList$ = new BehaviorSubject<Array<MessageX>>([]);
+  toScroll$ = new BehaviorSubject<boolean>(false);
 
   // TODO: Queue 機制，避免交叉錯誤
   addOrUpdate(

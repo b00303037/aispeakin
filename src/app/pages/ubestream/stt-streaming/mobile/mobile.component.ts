@@ -22,7 +22,7 @@ import { LocaleService } from '../../../../shared/services/locale.service';
 import { STTStreamingService } from '../../../../shared/services/stt-streaming.service';
 
 @Component({
-  selector: 'app-desktop-double',
+  selector: 'app-mobile',
   standalone: true,
   imports: [
     AsyncPipe,
@@ -33,10 +33,10 @@ import { STTStreamingService } from '../../../../shared/services/stt-streaming.s
     MessageComponent,
     DateFnsPipe,
   ],
-  templateUrl: './desktop-double.component.html',
-  styleUrl: './desktop-double.component.scss',
+  templateUrl: './mobile.component.html',
+  styleUrl: './mobile.component.scss',
 })
-export class DesktopDoubleComponent implements AfterViewInit, OnDestroy {
+export class MobileComponent implements AfterViewInit, OnDestroy {
   private viewInit$ = new Subject<null>();
   private destroy$ = new Subject<null>();
 

@@ -1,110 +1,39 @@
-<!-- TODO: Material Design layout: TabletLandscape -->
-<!-- @media only screen and (max-width: 1279.98px) and (orientation: landscape) -->
+<app-header [ngClass]="{ hidden: mode === modeObj.Mobile }"></app-header>
 
-<app-header></app-header>
+<app-recording-bar
+  [ngClass]="{ hidden: mode !== modeObj.Mobile }"
+  [mode]="mode"
+  [main]="false"
+  (modeEmit)="onModeEmit($event)"
+></app-recording-bar>
 
 <div
   [ngClass]="SMQueryMatches ? 'py-[64px]' : 'py-[56px]'"
   class="w-full h-screen"
 >
-  <div #messageBoxEl class="h-full overflow-y-auto">
+  <div class="h-full overflow-y-auto">
     @switch (mode) { @case (modeObj.DesktopSingle) {
     <div class="w-page h-full">
       <app-desktop-single
-        [dateFnsFormatStr]="dateFnsFormatStr"
-        [messageList]="(messageList$ | async) ?? []"
+        [messageList]="messageList$ | async"
       ></app-desktop-single>
     </div>
     } @case (modeObj.DesktopDouble) {
     <div class="w-full h-full">
       <app-desktop-double
-        [dateFnsFormatStr]="dateFnsFormatStr"
-        [messageList]="(messageList$ | async) ?? []"
+        [messageList]="messageList$ | async"
       ></app-desktop-double>
     </div>
     } @case (modeObj.Mobile) {
-    <div>Mobile</div>
+    <div class="w-full h-full">
+      <app-mobile [messageList]="messageList$ | async"></app-mobile>
+    </div>
     } }
   </div>
 </div>
 
-<div class="fixed right-0 bottom-0 left-0 bg-light z-50 dark:bg-darkest">
-  <mat-toolbar class="w-page px-2">
-    <div class="w-full flex">
-      <button
-        type="button"
-        mat-button
-        color="accent"
-        [matMenuTriggerFor]="modeMenu"
-      >
-        {{ "MODE.DISPLAY_MODE" | translate }}
-      </button>
-
-      <span class="grow"></span>
-    </div>
-
-    <div class="shrink-0">
-      <button
-        class="w-12 h-12 border-4 border-solid border-gray-700 rounded-full flex justify-center items-center dark:border-gray-300"
-        type="button"
-        (click)="!recording ? onStartRecording() : onStopRecording()"
-      >
-        <span
-          [ngClass]="!recording ? 'w-8 h-8 rounded-16' : 'w-5 h-5 rounded-4'"
-          class="transition-all bg-red-500"
-        ></span>
-      </button>
-    </div>
-
-    <div class="w-full flex">
-      <span class="grow"></span>
-
-      <button
-        type="button"
-        mat-icon-button
-        color="accent"
-        [matMenuTriggerFor]="actionMenu"
-      >
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
-</div>
-
-<mat-menu #modeMenu="matMenu">
-  <ng-template ngFor let-item [ngForOf]="modeMenuItemList">
-    <button
-      type="button"
-      [ngClass]="{ 'bg-accent text-white': item.value === mode }"
-      [disabled]="
-        (item.value === modeObj.DesktopDouble && !MDQueryMatches) ||
-        item.value === modeObj.Mobile
-      "
-      mat-menu-item
-      (click)="onSelectMode(item.value)"
-    >
-      <mat-icon
-        [ngClass]="{
-          'text-white': item.value === mode,
-          'rotate-90': item.value === modeObj.DesktopDouble
-        }"
-        >{{ item.icon }}</mat-icon
-      >
-      <span>{{ item.label | translate }}</span>
-    </button>
-  </ng-template>
-</mat-menu>
-
-<mat-menu #actionMenu="matMenu">
-  <button
-    class="text-warn"
-    type="button"
-    mat-menu-item
-    [disabled]="((messageList$ | async)?.length ?? 0) === 0"
-    (click)="onClearConversation()"
-  >
-    {{ "STT_STREAMING.CLEAR_CONVERSATION" | translate }}
-  </button>
-
-  <!-- TODO: 設置語言? -->
-</mat-menu>
+<app-recording-bar
+  [mode]="mode"
+  [main]="true"
+  (modeEmit)="onModeEmit($event)"
+></app-recording-bar>

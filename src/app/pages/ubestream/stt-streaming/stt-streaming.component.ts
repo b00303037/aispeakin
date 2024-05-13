@@ -1,31 +1,19 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { Component, OnDestroy } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, combineLatest, debounceTime, takeUntil, tap } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 //@angular/material
-import {
-  BreakpointObserver,
-  Breakpoints,
-} from '@angular/cdk/layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { DesktopDoubleComponent } from './desktop-double/desktop-double.component';
+import { RecordingBarComponent } from './recording-bar/recording-bar.component';
 import { DesktopSingleComponent } from './desktop-single/desktop-single.component';
-import { MessageO, RouteData } from './stt-streaming.models';
+import { MobileComponent } from './mobile/mobile.component';
+import { RouteData } from './stt-streaming.models';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { MediaQuery } from '../../../shared/enums/media-query.enum';
 import { MODE_OBJ, Mode } from '../../../shared/enums/mode.enum';
-import { DateFnsPipe } from '../../../shared/pipes/date-fns.pipe';
 import { AuthService } from '../../../shared/services/auth.service';
 import { RecorderService } from '../../../shared/services/recorder.service';
 import { STTStreamingService } from '../../../shared/services/stt-streaming.service';
@@ -35,60 +23,26 @@ import { STTStreamingService } from '../../../shared/services/stt-streaming.serv
   standalone: true,
   imports: [
     AsyncPipe,
-    NgIf,
-    NgFor,
     NgClass,
-    TranslateModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatToolbarModule,
     HeaderComponent,
     DesktopDoubleComponent,
+    RecordingBarComponent,
     DesktopSingleComponent,
-    DateFnsPipe,
+    MobileComponent,
   ],
   templateUrl: './stt-streaming.component.html',
   styleUrl: './stt-streaming.component.scss',
 })
-export class SttStreamingComponent implements AfterViewInit, OnDestroy {
-  private viewInit$ = new Subject<null>();
+export class SttStreamingComponent implements OnDestroy {
   private destroy$ = new Subject<null>();
 
-  @ViewChild('messageBoxEl') messageBoxEl?: ElementRef;
-
-  SMQueryMatches = true;
-  MDQueryMatches = true;
+  SMQueryMatches?: boolean;
+  landscapeQueryMatches?: boolean;
 
   messageList$ = this.STTStreamingService.messageList$;
 
   mode = Mode.DesktopSingle;
   modeObj = MODE_OBJ;
-
-  // TODO: icons for modes
-  // crop_square, tv_signin
-  // splitscreen, safety_divider
-  // smartphone
-  modeMenuItemList = [
-    {
-      label: 'MODE.DESKTOP_SINGLE',
-      value: Mode.DesktopSingle,
-      icon: 'crop_square',
-    },
-    {
-      label: 'MODE.DESKTOP_DOUBLE',
-      value: Mode.DesktopDouble,
-      icon: 'splitscreen',
-    },
-    {
-      label: 'MODE.MOBILE',
-      value: Mode.Mobile,
-      icon: 'smartphone',
-    },
-  ];
-
-  recording = false;
-  dateFnsFormatStr = 'PPpp';
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -108,12 +62,12 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
     }
 
     this.breakpointObserver
-      .observe([Breakpoints.Small, Breakpoints.Medium])
+      .observe([MediaQuery.SM, MediaQuery.MD, MediaQuery.Landscape])
       .pipe(
         takeUntil(this.destroy$),
         tap((result) => {
-          this.SMQueryMatches = result.breakpoints[Breakpoints.Small];
-          this.MDQueryMatches = result.breakpoints[Breakpoints.Medium];
+          this.SMQueryMatches = result.breakpoints[MediaQuery.SM];
+          this.landscapeQueryMatches = result.breakpoints[MediaQuery.Landscape];
         }),
         tap((result) => this.onBreakpoints(result.breakpoints))
       )
@@ -121,34 +75,8 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
 
     // TODO: handle param (candidates, main_lang, target_lang, log_name) change
 
-    this.recorderService.recording$
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((recording) => (this.recording = recording))
-      )
-      .subscribe();
-
-    combineLatest([this.viewInit$, this.STTStreamingService.messageList$])
-      .pipe(
-        takeUntil(this.destroy$),
-        debounceTime(50),
-        tap(() => {
-          setTimeout(() => {
-            const el = this.messageBoxEl?.nativeElement as HTMLElement;
-
-            el.scrollTop = el.scrollHeight;
-          });
-        })
-      )
-      .subscribe();
-
     // TODO: test
     // this.test();
-  }
-
-  ngAfterViewInit(): void {
-    this.viewInit$.next(null);
-    this.viewInit$.complete();
   }
 
   test(): void {
@@ -216,50 +144,33 @@ export class SttStreamingComponent implements AfterViewInit, OnDestroy {
   }
 
   onBreakpoints(breakpoints: { [key: string]: boolean }) {
-    const ltSM = !breakpoints[Breakpoints.Small];
-    const ltMD = !breakpoints[Breakpoints.Medium];
+    const ltMD = !breakpoints[MediaQuery.MD];
+    const isLandscape = breakpoints[MediaQuery.Landscape];
 
-    if (ltSM) {
-      if (this.mode !== Mode.DesktopSingle) {
-        this.mode = Mode.DesktopSingle;
-      }
-    } else if (ltMD) {
-      if (this.mode === Mode.DesktopDouble) {
-        this.mode = Mode.DesktopSingle;
-      }
+    let _mode: Mode = this.mode;
+
+    switch (this.mode) {
+      case Mode.DesktopSingle:
+        break;
+      case Mode.DesktopDouble:
+        if (ltMD) {
+          _mode = Mode.DesktopSingle;
+        }
+        break;
+      case Mode.Mobile:
+        if (ltMD && isLandscape) {
+          _mode = Mode.DesktopSingle;
+        }
+        break;
     }
+
+    this.mode = _mode;
+
+    this.STTStreamingService.toScroll$.next(true);
   }
 
-  onSelectMode(mode: Mode): void {
+  onModeEmit(mode: Mode): void {
     this.mode = mode;
-  }
-
-  onStartRecording(): void {
-    this.recorderService.startRecording(this.handleText.bind(this));
-  }
-
-  onStopRecording(): void {
-    this.recorderService.stopRecording();
-  }
-
-  handleText(text: string): void {
-    try {
-      const messageO: MessageO = JSON.parse(text);
-
-      console.log(new Date());
-      console.log(messageO);
-      console.log('---');
-
-      const { prefix, main_lang } = this.recorderService;
-
-      this.STTStreamingService.addOrUpdate(messageO, { prefix, main_lang });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  onClearConversation(): void {
-    this.STTStreamingService.clear();
   }
 
   ngOnDestroy(): void {

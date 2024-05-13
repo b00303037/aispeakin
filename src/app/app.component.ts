@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { filter, skip, tap } from 'rxjs';
+import { Subject, filter, skip, takeUntil, tap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Lang } from './shared/enums/lang.enum';
@@ -15,7 +15,9 @@ import { onThemeChange } from './shared/services/utils';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+  private destroy$ = new Subject<null>();
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -24,6 +26,7 @@ export class AppComponent {
   ) {
     this.authService.loggedIn$
       .pipe(
+        takeUntil(this.destroy$),
         skip(1),
         filter((_loggedIn) => !_loggedIn),
         tap(() => {
@@ -34,6 +37,7 @@ export class AppComponent {
 
     this.themeService.theme$
       .pipe(
+        takeUntil(this.destroy$),
         skip(1),
         tap((_theme) => {
           if (_theme !== undefined) {
@@ -48,5 +52,10 @@ export class AppComponent {
       .subscribe();
 
     this.t.use(Lang.ZHTW);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 }
