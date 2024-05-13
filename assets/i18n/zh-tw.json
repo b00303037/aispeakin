@@ -61,5 +61,8 @@
       "FEATURE_1": "擬人化語音生成",
       "FEATURE_2": "多國語言，多種聲音"
     }
+  },
+  "STT_STREAMING": {
+    "CLEAR_CONVERSATION": "清除對話"
   }
 }
