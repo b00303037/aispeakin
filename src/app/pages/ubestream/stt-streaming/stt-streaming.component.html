@@ -1,11 +1,4 @@
-<app-header [ngClass]="{ hidden: mode === modeObj.FaceToFace }"></app-header>
-
-<app-recording-bar
-  [ngClass]="{ hidden: mode !== modeObj.FaceToFace }"
-  [mode]="mode"
-  [main]="false"
-  (modeEmit)="onModeEmit($event)"
-></app-recording-bar>
+<app-header></app-header>
 
 <div
   [ngClass]="SMQueryMatches ? 'py-[64px]' : 'py-[56px]'"
