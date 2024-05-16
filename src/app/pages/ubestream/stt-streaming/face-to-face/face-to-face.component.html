@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'rotate-180': switched }" class="h-full flex flex-col">
-  <div #messageBox class="h-1/2 -scale-y-100 overflow-y-auto">
+  <div #messageBox class="h-1/2 -scale-x-100 -scale-y-100 overflow-y-auto">
     <ng-template
       ngFor
       let-message
@@ -9,7 +9,7 @@
       <app-message
         [message]="message"
         [locale]="locale$ | async"
-        [swapped]="false"
+        [swapped]="true"
       ></app-message>
     </ng-template>
   </div>
