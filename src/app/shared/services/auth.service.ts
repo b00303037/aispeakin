@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
 
+import { STTStreamingService } from './stt-streaming.service';
 import { tokenGetter } from './utils';
 import { Payload } from '../../api/models/jwt.models';
 
@@ -17,7 +18,10 @@ export class AuthService {
 
   logging = false;
 
-  constructor(private jwtHelperService: JwtHelperService) {}
+  constructor(
+    private jwtHelperService: JwtHelperService,
+    private STTStreamingService: STTStreamingService
+  ) {}
 
   get token(): string | null {
     return tokenGetter();
@@ -56,6 +60,8 @@ export class AuthService {
 
   logout(): void {
     this.token = null;
+
+    this.STTStreamingService.clear();
 
     this.payload$.next(undefined);
     this.loggedIn$.next(false);
