@@ -9,6 +9,8 @@ export const environment = {
   production: false,
   version: 0,
 
+  wsUrl: 'wss://stt.ubestream.com/wssapi/',
+
   /* FOR LOCAL API */
   // baseApiUrl: `https://localhost:44312/api/v${apiVersion}`,
   // allowedDomains: ['localhost:44312'],

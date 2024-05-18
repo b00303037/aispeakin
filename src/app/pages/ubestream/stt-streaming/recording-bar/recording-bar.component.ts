@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, distinctUntilChanged, takeUntil, tap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -17,10 +18,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MessageO } from '../stt-streaming.models';
+import { RLANG_OPTION_LIST, RLang } from '../../../../shared/enums/r-lang.enum';
 import { MediaQuery } from '../../../../shared/enums/media-query.enum';
 import { MODE_OBJ, Mode } from '../../../../shared/enums/mode.enum';
 import { RecorderService } from '../../../../shared/services/recorder.service';
 import { STTStreamingService } from '../../../../shared/services/stt-streaming.service';
+import { i18nSelectMapGenerator } from '../../../../shared/services/utils';
 
 @Component({
   selector: 'app-recording-bar',
@@ -69,13 +72,17 @@ export class RecordingBarComponent implements OnDestroy {
       icon: 'splitscreen',
     },
   ];
+  RLangOptionList = RLANG_OPTION_LIST;
+  RLangNameMap = i18nSelectMapGenerator(RLANG_OPTION_LIST, 'value', 'label');
 
   recording = false;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private route: ActivatedRoute,
+    private router: Router,
     private STTStreamingService: STTStreamingService,
-    private recorderService: RecorderService
+    public recorderService: RecorderService
   ) {
     this.breakpointObserver
       .observe([MediaQuery.MD, MediaQuery.Landscape])
@@ -99,6 +106,14 @@ export class RecordingBarComponent implements OnDestroy {
 
   onSelectMode(mode: Mode): void {
     this.modeEmit.emit(mode);
+  }
+
+  onSelectMainLang(main_lang: RLang): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { main_lang },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onStartRecording(): void {

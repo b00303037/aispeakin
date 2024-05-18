@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { RLang } from '../enums/r-lang.enum';
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class RecorderService {
   context?: AudioContext;
   ws?: WebSocket;
-  wsUrl: string = 'wss://stt.ubestream.com/wssapi/';
+  wsUrl: string = environment.wsUrl;
   relayNode?: AudioWorkletNode;
   audioData?: {
     size: number;
@@ -24,14 +27,23 @@ export class RecorderService {
   recording$ = new BehaviorSubject<boolean>(false);
 
   private _APIKey?: string = '';
-  private _candidates: string[] = ['zh', 'en', 'ja'];
-  private _main_lang: string = 'zh';
-  private _target_lang: string = 'en';
+  private _candidates: Array<string> = [RLang.ZH, RLang.EN, RLang.JA];
+  private _main_lang: string = RLang.ZH;
+  private _target_lang: string = RLang.EN;
   private _log_name: string = '';
   private _prefix: number = 0;
 
+  get candidates(): Array<string> {
+    return this._candidates;
+  }
   get main_lang(): string {
     return this._main_lang;
+  }
+  get target_lang(): string {
+    return this._target_lang;
+  }
+  get log_name(): string {
+    return this._log_name;
   }
   get prefix(): number {
     return this._prefix;
@@ -39,7 +51,7 @@ export class RecorderService {
   set APIKey(APIKey: string) {
     this._APIKey = APIKey;
   }
-  set candidates(candidates: string[]) {
+  set candidates(candidates: Array<string>) {
     this._candidates = candidates;
   }
   set main_lang(main_lang: string) {
@@ -169,7 +181,7 @@ export class RecorderService {
       inputSampleBits: 16, // 輸入採樣數位 8, 16
       outputSampleRate: 16000, // 輸出採樣率
       outputSampleBits: 16, // 輸出採樣數位 8, 16
-      input: function (data: number[]) {
+      input: function (data: Array<number>) {
         this.buffer.push(new Float32Array(data));
         this.size += data.length;
       },

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 //@angular/material
@@ -41,12 +41,14 @@ export class SttStreamingComponent implements OnDestroy {
 
   messageList$ = this.STTStreamingService.messageList$;
 
+  queryParamKeys = ['candidates', 'main_lang', 'target_lang', 'log_name'];
   mode = Mode.SingleSided;
   modeObj = MODE_OBJ;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
+    private router: Router,
     private authService: AuthService,
     private STTStreamingService: STTStreamingService,
     private recorderService: RecorderService
@@ -77,12 +79,8 @@ export class SttStreamingComponent implements OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap((queryParamMap) => {
-          const [candidates, main_lang, target_lang, log_name] = [
-            'candidates',
-            'main_lang',
-            'target_lang',
-            'log_name',
-          ].map((key) => queryParamMap.get(key));
+          const [candidates, main_lang, target_lang, log_name] =
+            this.queryParamKeys.map((key) => queryParamMap.get(key));
 
           if (typeof candidates === 'string') {
             this.recorderService.candidates = candidates.split(',');
@@ -99,6 +97,8 @@ export class SttStreamingComponent implements OnDestroy {
         })
       )
       .subscribe();
+
+    this.initQueryParams();
 
     // TODO: test
     // this.test();
@@ -166,6 +166,26 @@ export class SttStreamingComponent implements OnDestroy {
         { prefix, main_lang }
       );
     }, 15000);
+  }
+
+  initQueryParams(): void {
+    const [_candidates, _main_lang, _target_lang, _log_name] =
+      this.queryParamKeys.map((key) =>
+        this.route.snapshot.queryParamMap.get(key)
+      );
+    const { candidates, main_lang, target_lang, log_name } =
+      this.recorderService;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        candidates: _candidates ?? candidates.join(','),
+        main_lang: _main_lang ?? main_lang,
+        target_lang: _target_lang ?? target_lang,
+        log_name: _log_name ?? log_name,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onBreakpoints(breakpoints: { [key: string]: boolean }) {

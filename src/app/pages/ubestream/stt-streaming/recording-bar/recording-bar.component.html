@@ -76,7 +76,11 @@
   </ng-template>
 </mat-menu>
 
-<mat-menu #actionMenu="matMenu">
+<mat-menu #actionMenu="matMenu" xPosition="before">
+  <button type="button" mat-menu-item [matMenuTriggerFor]="RLangMenu">
+    {{ "STT_STREAMING.MAIN_LANG" | translate }}
+  </button>
+
   <button
     class="text-warn"
     type="button"
@@ -86,6 +90,19 @@
   >
     {{ "STT_STREAMING.CLEAR_CONVERSATION" | translate }}
   </button>
+</mat-menu>
 
-  <!-- TODO: 設置語言? -->
+<mat-menu #RLangMenu="matMenu" yPosition="above">
+  <ng-template ngFor let-RLang [ngForOf]="RLangOptionList">
+    <button
+      type="button"
+      [ngClass]="{
+        'bg-accent text-white': RLang.value === recorderService.main_lang
+      }"
+      mat-menu-item
+      (click)="onSelectMainLang(RLang.value)"
+    >
+      <span> {{ RLang.label }}</span>
+    </button>
+  </ng-template>
 </mat-menu>
