@@ -63,6 +63,7 @@
     }
   },
   "STT_STREAMING": {
+    "MAIN_LANG": "主な言語",
     "CLEAR_CONVERSATION": "対話をクリア"
   }
 }
