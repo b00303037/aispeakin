@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 //@angular/material
@@ -41,7 +41,14 @@ export class SttStreamingComponent implements OnDestroy {
 
   messageList$ = this.STTStreamingService.messageList$;
 
-  queryParamKeys = ['candidates', 'main_lang', 'target_lang', 'log_name'];
+  queryParamKeys = [
+    'candidates',
+    'main_lang',
+    'target_lang',
+    'log_name',
+    'save_whole',
+    'stt_only',
+  ];
   mode = Mode.SingleSided;
   modeObj = MODE_OBJ;
 
@@ -79,8 +86,14 @@ export class SttStreamingComponent implements OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap((queryParamMap) => {
-          const [candidates, main_lang, target_lang, log_name] =
-            this.queryParamKeys.map((key) => queryParamMap.get(key));
+          const [
+            candidates,
+            main_lang,
+            target_lang,
+            log_name,
+            save_whole,
+            stt_only,
+          ] = this.queryParamKeys.map((key) => queryParamMap.get(key));
 
           if (typeof candidates === 'string') {
             this.recorderService.candidates = candidates.split(',');
@@ -91,9 +104,9 @@ export class SttStreamingComponent implements OnDestroy {
           if (typeof target_lang === 'string') {
             this.recorderService.target_lang = target_lang;
           }
-          if (typeof log_name === 'string') {
-            this.recorderService.log_name = log_name;
-          }
+          this.recorderService.log_name = log_name;
+          this.recorderService.save_whole = save_whole;
+          this.recorderService.stt_only = stt_only;
         })
       )
       .subscribe();
@@ -169,21 +182,37 @@ export class SttStreamingComponent implements OnDestroy {
   }
 
   initQueryParams(): void {
-    const [_candidates, _main_lang, _target_lang, _log_name] =
-      this.queryParamKeys.map((key) =>
-        this.route.snapshot.queryParamMap.get(key)
-      );
-    const { candidates, main_lang, target_lang, log_name } =
-      this.recorderService;
+    const [
+      _candidates,
+      _main_lang,
+      _target_lang,
+      _log_name,
+      _save_whole,
+      _stt_only,
+    ] = this.queryParamKeys.map((key) =>
+      this.route.snapshot.queryParamMap.get(key)
+    );
+    const {
+      candidates,
+      main_lang,
+      target_lang,
+      log_name,
+      save_whole,
+      stt_only,
+    } = this.recorderService;
+
+    const params: Params = {
+      candidates: _candidates ?? candidates.join(','),
+      main_lang: _main_lang ?? main_lang,
+      target_lang: _target_lang ?? target_lang,
+      log_name: _log_name ?? log_name,
+      save_whole: _save_whole ?? save_whole,
+      stt_only: _stt_only ?? stt_only,
+    };
 
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {
-        candidates: _candidates ?? candidates.join(','),
-        main_lang: _main_lang ?? main_lang,
-        target_lang: _target_lang ?? target_lang,
-        log_name: _log_name ?? log_name,
-      },
+      queryParams: params,
       queryParamsHandling: 'merge',
     });
   }

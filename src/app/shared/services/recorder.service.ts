@@ -30,9 +30,14 @@ export class RecorderService {
   private _candidates: Array<string> = [RLang.ZH, RLang.EN, RLang.JA];
   private _main_lang: string = RLang.ZH;
   private _target_lang: string = RLang.EN;
-  private _log_name: string = '';
+  private _log_name: string | null = null;
+  private _save_whole: string | null = null;
+  private _stt_only: string | null = null;
   private _prefix: number = 0;
 
+  get APIKey(): string | undefined {
+    return this._APIKey;
+  }
   get candidates(): Array<string> {
     return this._candidates;
   }
@@ -42,8 +47,14 @@ export class RecorderService {
   get target_lang(): string {
     return this._target_lang;
   }
-  get log_name(): string {
+  get log_name(): string | null {
     return this._log_name;
+  }
+  get save_whole(): string | null {
+    return this._save_whole;
+  }
+  get stt_only(): string | null {
+    return this._stt_only;
   }
   get prefix(): number {
     return this._prefix;
@@ -60,8 +71,14 @@ export class RecorderService {
   set target_lang(target_lang: string) {
     this._target_lang = target_lang;
   }
-  set log_name(log_name: string) {
+  set log_name(log_name: string | null) {
     this._log_name = log_name;
+  }
+  set save_whole(save_whole: string | null) {
+    this._save_whole = save_whole;
+  }
+  set stt_only(stt_only: string | null) {
+    this._stt_only = stt_only;
   }
 
   startRecording(callback: Function): void {
@@ -143,11 +160,13 @@ export class RecorderService {
     this.ws.addEventListener('open', () => {
       this.ws?.send(
         JSON.stringify({
-          token: this._APIKey,
-          candidates: this._candidates,
-          main_lang: this._main_lang,
-          target_lang: this._target_lang,
-          log_name: this._log_name,
+          token: this.APIKey,
+          candidates: this.candidates,
+          main_lang: this.main_lang,
+          target_lang: this.target_lang,
+          log_name: this.log_name ?? '',
+          save_whole: this.save_whole ?? '0',
+          transcribe_only: this.stt_only !== null ? '1' : undefined,
         })
       );
     });
