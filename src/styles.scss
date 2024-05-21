@@ -86,6 +86,10 @@ html.dark {
   }
 }
 
+* {
+  scrollbar-width: thin;
+}
+
 /* adjustments for @angular/material */
 /* button */
 .mdc-icon-button {

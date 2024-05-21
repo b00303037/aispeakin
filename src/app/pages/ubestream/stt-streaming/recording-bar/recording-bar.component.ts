@@ -126,15 +126,20 @@ export class RecordingBarComponent implements OnDestroy {
 
   handleText(text: string): void {
     try {
-      const messageO: MessageO = JSON.parse(text);
+      let messageOList: Array<MessageO> = [];
+      let data: MessageO | Array<MessageO> = JSON.parse(text);
 
       console.log(new Date());
-      console.log(messageO);
+      console.log(data);
       console.log('---');
+
+      messageOList = Array.isArray(data) ? [...data] : [data];
 
       const { prefix, main_lang } = this.recorderService;
 
-      this.STTStreamingService.addOrUpdate(messageO, { prefix, main_lang });
+      messageOList.forEach((messageO) => {
+        this.STTStreamingService.addOrUpdate(messageO, { prefix, main_lang });
+      });
     } catch (error) {
       console.error(error);
     }
