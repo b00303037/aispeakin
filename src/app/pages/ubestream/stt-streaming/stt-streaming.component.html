@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div
-  [ngClass]="SMQueryMatches ? 'py-[64px]' : 'py-[56px]'"
+  [ngClass]="SMQueryMatches ? 'pt-[64px] pb-[120px]' : 'pt-[56px] pb-[112px]'"
   class="w-full h-dvh"
 >
   <div class="h-full">
@@ -18,6 +18,40 @@
       <app-face-to-face [messageList]="messageList$ | async"></app-face-to-face>
     </div>
     } }
+  </div>
+</div>
+
+<div
+  [ngClass]="SMQueryMatches ? 'bottom-[64px]' : 'bottom-[56px]'"
+  class="fixed right-0 left-0 bg-white"
+>
+  <div class="w-page h-14 flex justify-evenly items-center bg-transparent px-2">
+    <div class="shrink-0 w-1/3 h-full flex justify-center items-center">
+      <img
+        class="w-auto h-full max-h-6 object-contain"
+        width="auto"
+        src="assets/InnoVEX.png"
+        alt="InnoVEX"
+      />
+    </div>
+
+    <div class="shrink-0 w-1/3 h-full flex justify-center items-center">
+      <img
+        class="w-auto h-full max-h-10 object-contain"
+        width="auto"
+        src="assets/COMPUTEX-TAIPEI.png"
+        alt="COMPUTEX TAIPEI"
+      />
+    </div>
+
+    <div class="shrink-0 w-1/3 h-full flex justify-center items-center">
+      <img
+        class="w-auto h-full max-h-10 object-contain"
+        width="auto"
+        src="assets/TITA_D.png"
+        alt="TITA"
+      />
+    </div>
   </div>
 </div>
 
