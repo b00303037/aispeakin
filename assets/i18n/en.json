@@ -64,6 +64,7 @@
   },
   "STT_STREAMING": {
     "MAIN_LANG": "Primary language",
-    "CLEAR_CONVERSATION": "Clear conversation"
+    "CLEAR_CONVERSATION": "Clear conversation",
+    "SHARE_FEEDBACK": "Share your feedback!"
   }
 }
