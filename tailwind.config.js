@@ -115,6 +115,7 @@ module.exports = {
         darker: "#303030",
         darkest: "#212121",
         goldenrod: "goldenrod",
+        darkgoldenrod: "darkgoldenrod",
       },
       maxWidth: {
         80: "320px", // 20rem
@@ -139,5 +140,6 @@ module.exports = {
     },
   },
   important: true,
+  safelist: ["bg-black"],
   plugins: [],
 };

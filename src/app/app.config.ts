@@ -45,7 +45,9 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom([
       TranslateModule.forRoot({
-        defaultLanguage: Lang.ZHTW,
+        defaultLanguage: Object.values(Lang).includes(localStorage['lang'])
+          ? localStorage['lang']
+          : Lang.ZHTW,
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,

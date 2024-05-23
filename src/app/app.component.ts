@@ -60,7 +60,15 @@ export class AppComponent implements OnDestroy {
       )
       .subscribe();
 
-    this.t.use(Lang.ZHTW);
+    this.t.onLangChange
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged(),
+        tap((e) => {
+          localStorage['lang'] = e.lang;
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

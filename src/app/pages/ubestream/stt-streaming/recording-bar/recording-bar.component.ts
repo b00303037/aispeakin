@@ -13,11 +13,13 @@ import { TranslateModule } from '@ngx-translate/core';
 // @angular/material
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MessageO } from '../stt-streaming.models';
+import { SurveyLinkDialogComponent } from '../../../../shared/components/survey-link-dialog/survey-link-dialog.component';
 import { RLANG_OPTION_LIST, RLang } from '../../../../shared/enums/r-lang.enum';
 import { MediaQuery } from '../../../../shared/enums/media-query.enum';
 import { MODE_OBJ, Mode } from '../../../../shared/enums/mode.enum';
@@ -35,6 +37,7 @@ import { i18nSelectMapGenerator } from '../../../../shared/services/utils';
     NgClass,
     TranslateModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatMenuModule,
     MatToolbarModule,
@@ -81,6 +84,7 @@ export class RecordingBarComponent implements OnDestroy {
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private router: Router,
+    private matDialog: MatDialog,
     private STTStreamingService: STTStreamingService,
     public recorderService: RecorderService
   ) {
@@ -122,6 +126,17 @@ export class RecordingBarComponent implements OnDestroy {
 
   onStopRecording(): void {
     this.recorderService.stopRecording();
+
+    this.openSurveyLinkDialog();
+  }
+
+  openSurveyLinkDialog(): void {
+    this.matDialog.open(SurveyLinkDialogComponent, {
+      autoFocus: false,
+      backdropClass: 'bg-black',
+      enterAnimationDuration: 250,
+      exitAnimationDuration: 250,
+    });
   }
 
   handleText(text: string): void {
