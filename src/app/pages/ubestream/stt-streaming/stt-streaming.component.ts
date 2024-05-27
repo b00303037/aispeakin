@@ -212,7 +212,7 @@ export class SttStreamingComponent implements OnDestroy {
       target_lang: _target_lang ?? target_lang,
       log_name: _log_name ?? log_name,
       save_whole: _save_whole ?? save_whole,
-      accepted_min_lang_prob: accepted_min_lang_prob ?? _accepted_min_lang_prob,
+      accepted_min_lang_prob: _accepted_min_lang_prob ?? accepted_min_lang_prob,
       stt_only: _stt_only ?? stt_only,
     };
 
