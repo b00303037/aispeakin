@@ -11,21 +11,39 @@
     "FACE_TO_FACE": "Face-to-face"
   },
   "HEADER": {
-    "LOGIN": "LOGIN",
+    "LOGIN": "Login",
     "LOGOUT": "Logout",
     "MY_ACCOUNT": "My Account",
     "SERVICES": "Services"
   },
   "LOGIN": {
-    "TITLE": "LOGIN",
-    "USERNAME": "Username",
+    "TITLE": "Login",
+    "USERNAME": "Email",
     "PASSWORD": "Password",
     "CLEAR": "Clear",
     "HIDE_PASSWORD": "Hide password",
     "SHOW_PASSWORD": "Show password",
     "ERROR": {
-      "USERNAME_REQUIRED": "Enter a username",
+      "USERNAME_REQUIRED": "Enter a email",
+      "USERNAME_EMAIL": "Email is invalid",
       "PASSWORD_REQUIRED": "Enter a password"
+    }
+  },
+  "REGISTER": {
+    "TITLE": "Register",
+    "USERNAME": "Email",
+    "PASSWORD": "Password",
+    "CONFIRM_PASSWORD": "Confirm password",
+    "CLEAR": "Clear",
+    "HIDE_PASSWORD": "Hide password",
+    "SHOW_PASSWORD": "Show password",
+    "ERROR": {
+      "USERNAME_REQUIRED": "Enter a email",
+      "USERNAME_EMAIL": "Email is invalid",
+      "PASSWORD_REQUIRED": "Enter a password",
+      "PASSWORD_MINLENGTH": "Please enter a password with at least 8 characters",
+      "CONFIRM_PASSWORD_REQUIRED": "Please re-enter password",
+      "PASSWORD_NOT_MATCH": "Passwords do not match"
     }
   },
   "HOME": {
@@ -65,6 +83,33 @@
   "STT_STREAMING": {
     "MAIN_LANG": "Primary language",
     "CLEAR_CONVERSATION": "Clear conversation",
-    "SHARE_FEEDBACK": "Share your feedback!"
+    "SHARE_FEEDBACK": "Share your feedback!",
+    "NEXT": "Next",
+    "PREV": "Previous",
+    "SUBMIT": "Submit"
+  },
+  "API": {
+    "ERROR": "An unexpected error occurred. Please try again later.",
+    "LOGIN": {
+      "SUCCESS": "Login successful.",
+      "USERNAME_REQUIRED": "Email is a required field.",
+      "PASSWORD_REQUIRED": "Password is a required field.",
+      "FAILURE": "Incorrect email or password."
+    },
+    "REGISTER": {
+      "SUCCESS": "Registration successful.",
+      "USERNAME_REQUIRED": "Email is a required field.",
+      "USERNAME_MAX_LENGTH": "Email has a maximum length of 50 characters.",
+      "USERNAME_PATTERN": "Incorrect email format.",
+      "USERNAME_UNIQUE": "This email has already been registered.",
+      "PASSWORD_REQUIRED": "Password is a required field.",
+      "PASSWORD_MIN_LENGTH": "Password must be at least 8 characters long.",
+      "PASSWORD_MAX_LENGTH": "Password has a maximum length of 50 characters."
+    },
+    "ADD_USER_FEEDBACK": {
+      "SUCCESS": "We have received your response.",
+      "EMAIL_MAX_LENGTH": "Email has a maximum length of 50 characters.",
+      "EMAIL_PATTERN": "Incorrect email format."
+    }
   }
 }
