@@ -106,9 +106,13 @@ export class SttStreamingComponent implements OnDestroy {
           if (typeof target_lang === 'string') {
             this.recorderService.target_lang = target_lang;
           }
+          if (typeof accepted_min_lang_prob === 'string') {
+            this.recorderService.accepted_min_lang_prob =
+              accepted_min_lang_prob;
+          }
+
           this.recorderService.log_name = log_name;
           this.recorderService.save_whole = save_whole;
-          this.recorderService.accepted_min_lang_prob = accepted_min_lang_prob;
           this.recorderService.stt_only = stt_only;
         })
       )
