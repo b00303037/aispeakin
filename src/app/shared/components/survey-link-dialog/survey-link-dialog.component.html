@@ -1,27 +1,205 @@
-<div mat-dialog-title>{{ "STT_STREAMING.SHARE_FEEDBACK" | translate }}</div>
+<div mat-dialog-title>
+  <span class="inline-block pt-5 pr-10">
+    {{ "STT_STREAMING.SHARE_FEEDBACK" | translate }}
+  </span>
 
-<div mat-dialog-content class="flex justify-center">
-  <div class="flex flex-col items-stretch">
-    <a
-      class="rounded-full bg-darkgoldenrod text-white mb-4"
+  <button
+    type="button"
+    class="absolute top-2 right-2"
+    mat-icon-button
+    mat-dialog-close
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-content>
+  <mat-tab-group
+    [(selectedIndex)]="selectedIndex"
+    class="hidden-tabs"
+    dynamicHeight
+  >
+    <mat-tab>
+      <mat-radio-group
+        class="flex flex-col items-stretch"
+        [formControl]="langFC"
+      >
+        <mat-radio-button class="example-radio-button" [value]="'zh-tw'">
+          中文表單
+        </mat-radio-button>
+
+        <mat-radio-button class="example-radio-button" [value]="'en'">
+          English Form
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-tab>
+
+    <mat-tab>
+      <div>
+        <span class="text-warn">* </span>
+        <span [innerHTML]="question[0].question"></span>
+      </div>
+      <mat-radio-group
+        class="flex flex-col items-stretch mb-8"
+        [formControl]="fcs['experience']"
+        required
+      >
+        <ng-template ngFor let-option [ngForOf]="question[0].options">
+          <mat-radio-button [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+
+      <div>
+        <span class="text-warn">* </span>
+        <span [innerHTML]="question[1].question"></span>
+      </div>
+      <mat-radio-group
+        class="flex flex-col items-stretch mb-8"
+        [formControl]="fcs['speedAndAccuracy']"
+        required
+      >
+        <ng-template ngFor let-option [ngForOf]="question[1].options">
+          <mat-radio-button [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+
+      <div>
+        <span class="text-warn">* </span>
+        <span [innerHTML]="question[2].question"></span>
+      </div>
+      <mat-radio-group
+        class="flex flex-col items-stretch mb-8"
+        [formControl]="fcs['interface']"
+        required
+      >
+        <ng-template ngFor let-option [ngForOf]="question[2].options">
+          <mat-radio-button [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+
+      <div>
+        <span class="text-warn">* </span>
+        <span [innerHTML]="question[3].question"></span>
+      </div>
+      <mat-radio-group
+        class="flex flex-col items-stretch mb-8"
+        [formControl]="fcs['businessComm']"
+        required
+      >
+        <ng-template ngFor let-option [ngForOf]="question[3].options">
+          <mat-radio-button [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+
+      <div>
+        <span class="text-warn">* </span>
+        <span [innerHTML]="question[4].question"></span>
+      </div>
+      <mat-radio-group
+        class="flex flex-col items-stretch mb-8"
+        [formControl]="fcs['exhibitions']"
+        required
+      >
+        <ng-template ngFor let-option [ngForOf]="question[4].options">
+          <mat-radio-button [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+
+      <div>
+        <span class="text-warn">* </span>
+        <span [innerHTML]="question[5].question"></span>
+      </div>
+      <mat-radio-group
+        class="flex flex-col items-stretch mb-8"
+        [formControl]="fcs['potentialRevenue']"
+        required
+      >
+        <ng-template ngFor let-option [ngForOf]="question[5].options">
+          <mat-radio-button [value]="option.value">
+            {{ option.label }}
+          </mat-radio-button>
+        </ng-template>
+      </mat-radio-group>
+
+      <div>
+        <span [innerHTML]="question[6].question"></span>
+      </div>
+      <mat-form-field class="w-full mt-2" appearance="fill">
+        <input
+          type="text"
+          inputmode="email"
+          matInput
+          [formControl]="fcs['email']"
+          maxlength="50"
+        />
+
+        <mat-icon matPrefix>email</mat-icon>
+
+        <mat-hint align="end"
+          >{{ fcs["email"].value.length || 0 }} / 50</mat-hint
+        >
+
+        <mat-icon
+          *ngIf="fcs['email'].value"
+          matSuffix
+          class="cursor-pointer"
+          [matTooltip]="'REGISTER.CLEAR' | translate"
+          (click)="fcs['email'].reset()"
+        >
+          clear
+        </mat-icon>
+
+        <mat-error *ngIf="fcs['email'].hasError('email')">{{
+          "REGISTER.ERROR.USERNAME_EMAIL" | translate
+        }}</mat-error>
+      </mat-form-field>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<div mat-dialog-actions align="end">
+  <ng-container *ngIf="selectedIndex === 0">
+    <button
+      type="button"
       mat-flat-button
       color="primary"
-      href="https://forms.gle/wDawWJLA5eW3ZuEG6"
-      target="_blank"
+      [disabled]="langFC.hasError('required')"
+      (click)="selectedIndex = 1"
     >
-      <mat-icon>open_in_new</mat-icon>
-      <span>中文表單</span>
-    </a>
+      {{ "STT_STREAMING.NEXT" | translate }}
+    </button>
+  </ng-container>
 
-    <a
-      class="rounded-full bg-darkgoldenrod text-white"
+  <ng-container *ngIf="selectedIndex === 1">
+    <button
+      type="button"
+      mat-button
+      [disabled]="adding"
+      (click)="selectedIndex = 0"
+    >
+      {{ "STT_STREAMING.PREV" | translate }}
+    </button>
+
+    <button
+      type="button"
       mat-flat-button
       color="primary"
-      href="https://forms.gle/6skJC7aP4a6UjWS96"
-      target="_blank"
+      [disabled]="fg.invalid"
+      (click)="onAddUserFeedback()"
     >
-      <mat-icon>open_in_new</mat-icon>
-      <span>English Form</span>
-    </a>
-  </div>
+      @if (adding) {
+      <mat-spinner diameter="24"></mat-spinner>
+      } @else { {{ "STT_STREAMING.SUBMIT" | translate }} }
+    </button>
+  </ng-container>
 </div>

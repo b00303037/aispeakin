@@ -100,3 +100,11 @@ html.dark {
 .mdc-notched-outline__notch {
   border-right-width: 0 !important;
 }
+mat-error {
+  line-height: 1 !important;
+}
+
+/* tabs */
+mat-tab-group.hidden-tabs > mat-tab-header {
+  display: none !important;
+}

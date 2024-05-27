@@ -29,16 +29,16 @@
     <div class="overflow-y-auto grow flex justify-center items-center p-8">
       <form [formGroup]="fg" class="w-full max-w-80 grid gap-4 grid-cols-1">
         <div class="flex justify-between items-center col-span-1 my-4">
-          <span class="text-3xl">{{ "LOGIN.TITLE" | translate }}</span>
+          <span class="text-3xl">{{ "REGISTER.TITLE" | translate }}</span>
 
           <button type="button" mat-icon-button [matMenuTriggerFor]="langMenu">
             <mat-icon>language</mat-icon>
           </button>
         </div>
 
-        <!-- Email -->
+        <!-- 帳號 -->
         <mat-form-field class="col-span-1" appearance="outline">
-          <mat-label>{{ "LOGIN.USERNAME" | translate }}</mat-label>
+          <mat-label>{{ "REGISTER.USERNAME" | translate }}</mat-label>
           <input
             type="text"
             inputmode="email"
@@ -46,7 +46,7 @@
             [formControl]="fcs['username']"
             maxlength="50"
             required
-            [readonly]="loggingIn"
+            [readonly]="registering"
             appAutofocus
           />
 
@@ -56,31 +56,35 @@
             *ngIf="fcs['username'].value"
             matSuffix
             class="cursor-pointer"
-            [matTooltip]="'LOGIN.CLEAR' | translate"
+            [matTooltip]="'REGISTER.CLEAR' | translate"
             (click)="fcs['username'].reset()"
           >
             clear
           </mat-icon>
 
+          <mat-hint align="end"
+            >{{ fcs["username"].value.length || 0 }} / 50</mat-hint
+          >
+
           <mat-error *ngIf="fcs['username'].hasError('required')">{{
-            "LOGIN.ERROR.USERNAME_REQUIRED" | translate
+            "REGISTER.ERROR.USERNAME_REQUIRED" | translate
           }}</mat-error>
 
           <mat-error *ngIf="fcs['username'].hasError('email')">{{
-            "LOGIN.ERROR.USERNAME_EMAIL" | translate
+            "REGISTER.ERROR.USERNAME_EMAIL" | translate
           }}</mat-error>
         </mat-form-field>
 
         <!-- 密碼 -->
         <mat-form-field class="col-span-1" appearance="outline">
-          <mat-label>{{ "LOGIN.PASSWORD" | translate }}</mat-label>
+          <mat-label>{{ "REGISTER.PASSWORD" | translate }}</mat-label>
           <input
             [type]="showPassword ? 'text' : 'password'"
             matInput
             [formControl]="fcs['password']"
             maxlength="50"
             required
-            [readonly]="loggingIn"
+            [readonly]="registering"
             autocomplete="off"
           />
 
@@ -90,15 +94,62 @@
             matSuffix
             class="cursor-pointer"
             [matTooltip]="
-              (showPassword ? 'LOGIN.HIDE_PASSWORD' : 'LOGIN.SHOW_PASSWORD')
-                | translate
+              (showPassword
+                ? 'REGISTER.HIDE_PASSWORD'
+                : 'REGISTER.SHOW_PASSWORD'
+              ) | translate
             "
             (click)="showPassword = !showPassword"
             >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
           >
 
+          <mat-hint align="end"
+            >{{ fcs["password"].value.length || 0 }} / 50</mat-hint
+          >
+
           <mat-error *ngIf="fcs['password'].hasError('required')">{{
-            "LOGIN.ERROR.PASSWORD_REQUIRED" | translate
+            "REGISTER.ERROR.PASSWORD_REQUIRED" | translate
+          }}</mat-error>
+
+          <mat-error *ngIf="fcs['password'].hasError('minlength')">{{
+            "REGISTER.ERROR.PASSWORD_MINLENGTH" | translate
+          }}</mat-error>
+        </mat-form-field>
+
+        <!-- 確認密碼 -->
+        <mat-form-field class="col-span-1" appearance="outline">
+          <mat-label>{{ "REGISTER.CONFIRM_PASSWORD" | translate }}</mat-label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            matInput
+            [formControl]="fcs['confirmPassword']"
+            required
+            maxlength="50"
+            autocomplete="off"
+            [errorStateMatcher]="passwordMatchErrorStateMatcher"
+          />
+
+          <mat-icon matPrefix>key</mat-icon>
+
+          <mat-icon
+            matSuffix
+            class="cursor-pointer"
+            [matTooltip]="
+              (showPassword
+                ? 'REGISTER.HIDE_PASSWORD'
+                : 'REGISTER.SHOW_PASSWORD'
+              ) | translate
+            "
+            (click)="showPassword = !showPassword"
+            >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
+          >
+
+          <mat-error *ngIf="fcs['confirmPassword'].hasError('required')">{{
+            "REGISTER.ERROR.CONFIRM_PASSWORD_REQUIRED" | translate
+          }}</mat-error>
+
+          <mat-error *ngIf="fg.hasError('passwordMatch')">{{
+            "REGISTER.ERROR.PASSWORD_NOT_MATCH" | translate
           }}</mat-error>
         </mat-form-field>
 
@@ -107,12 +158,12 @@
           type="submit"
           mat-flat-button
           color="primary"
-          [disabled]="loggingIn"
-          (click)="onLogin()"
+          [disabled]="registering"
+          (click)="onRegister()"
         >
-          @if (loggingIn) {
+          @if (registering) {
           <mat-spinner diameter="24"></mat-spinner>
-          } @else { {{ "LOGIN.TITLE" | translate }} }
+          } @else { {{ "REGISTER.TITLE" | translate }} }
         </button>
 
         <button
@@ -120,10 +171,10 @@
           type="button"
           mat-button
           color="primary"
-          [disabled]="loggingIn"
-          [routerLink]="['/register']"
+          [disabled]="registering"
+          [routerLink]="['/login']"
         >
-          {{ "REGISTER.TITLE" | translate }}
+          {{ "LOGIN.TITLE" | translate }}
         </button>
       </form>
     </div>

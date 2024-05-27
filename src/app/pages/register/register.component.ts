@@ -28,18 +28,21 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { LoginFCs } from './login.models';
+import { RegisterFCs } from './register.models';
 import { AbstractXService } from '../../api/abstract/abstract-x.service';
 import { BaseAPIResModel } from '../../api/models/base-api.models';
-import { XLoginReq } from '../../api/models/x/x-login.models';
+import { XRegisterReq } from '../../api/models/x/x-register.models';
 import { AutofocusDirective } from '../../shared/directives/autofocus.directive';
 import { LANG_OPTION_LIST, Lang } from '../../shared/enums/lang.enum';
 import { SnackType } from '../../shared/enums/snack-type.enum';
-import { AuthService } from '../../shared/services/auth.service';
 import { SnackBarService } from '../../shared/services/snack-bar.service';
+import {
+  PasswordMatchErrorStateMatcher,
+  ValidatorsExtra,
+} from '../../shared/services/validators-extra';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [
     NgFor,
@@ -57,32 +60,48 @@ import { SnackBarService } from '../../shared/services/snack-bar.service';
     MatTooltipModule,
     AutofocusDirective,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
 })
-export class LoginComponent implements OnDestroy {
+export class RegisterComponent implements OnDestroy {
   private destroy$ = new Subject<null>();
   private _SMQueryListener = () => this.changeDetectorRef.detectChanges();
 
   SMQuery: MediaQueryList = this.media.matchMedia('(min-width: 600px)');
 
-  fg = new FormGroup<LoginFCs>({
-    username: new FormControl('', {
-      nonNullable: true,
+  fg = new FormGroup<RegisterFCs>(
+    {
+      username: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(50),
+        ],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(50),
+        ],
+      }),
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+    },
+    {
       validators: [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(50),
+        ValidatorsExtra.passwordMatch(['password', 'confirmPassword']),
       ],
-    }),
-    password: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(50)],
-    }),
-  });
-  fcs: LoginFCs = {
+    }
+  );
+  fcs: RegisterFCs = {
     username: this.fg.controls['username'],
     password: this.fg.controls['password'],
+    confirmPassword: this.fg.controls['confirmPassword'],
   };
   get fv() {
     return this.fg.getRawValue();
@@ -90,15 +109,16 @@ export class LoginComponent implements OnDestroy {
 
   langOptionList = LANG_OPTION_LIST;
 
+  passwordMatchErrorStateMatcher = new PasswordMatchErrorStateMatcher();
+
   showPassword = false;
-  loggingIn = false;
+  registering = false;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
     private router: Router,
     private xService: AbstractXService,
-    private authService: AuthService,
     private snackBarService: SnackBarService,
     public t: TranslateService
   ) {
@@ -111,45 +131,35 @@ export class LoginComponent implements OnDestroy {
     document.documentElement.setAttribute('lang', lang);
   }
 
-  onLogin(): void {
+  onRegister(): void {
     this.fg.markAllAsTouched();
     this.fg.updateValueAndValidity();
 
-    if (this.fg.invalid || this.loggingIn) {
+    if (this.fg.invalid || this.registering) {
       return;
     }
-    this.loggingIn = true;
+    this.registering = true;
 
     const { username, password } = this.fv;
-    const req: XLoginReq = {
+    const req: XRegisterReq = {
       username,
       password,
     };
 
     this.xService
-      .XLogin(req)
+      .XRegister(req)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => (this.loggingIn = false)),
+        finalize(() => (this.registering = false)),
         tap((res) => {
-          const { accessToken } = res.content;
-
-          this.authService.token = accessToken;
-
-          if (this.authService.validateToken()) {
-            this.authService.loggedIn$.next(true);
-
-            this.t.get(res.message).subscribe((message) => {
-              this.snackBarService.add({
-                message,
-                type: SnackType.Success,
-              });
+          this.t.get(res.message).subscribe((message) => {
+            this.snackBarService.add({
+              message,
+              type: SnackType.Success,
             });
+          });
 
-            this.router.navigate(['/ubestream']);
-          } else {
-            // TODO ?
-          }
+          this.router.navigate(['/login']);
         }),
         catchError((err) => this.onError(err))
       )
@@ -165,8 +175,6 @@ export class LoginComponent implements OnDestroy {
         type: SnackType.Error,
       });
     });
-
-    this.fcs['password'].reset();
 
     return EMPTY;
   }

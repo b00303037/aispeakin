@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 // pages
 import { SttStreamingComponent } from './pages/ubestream/stt-streaming/stt-streaming.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 
 import { authGuard } from './shared/guards/auth.guard';
@@ -30,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
   {
     path: 'home',

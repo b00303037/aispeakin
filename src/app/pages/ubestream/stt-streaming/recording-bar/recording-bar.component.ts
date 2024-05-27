@@ -134,6 +134,7 @@ export class RecordingBarComponent implements OnDestroy {
     this.matDialog.open(SurveyLinkDialogComponent, {
       autoFocus: false,
       backdropClass: 'bg-black',
+      disableClose: true,
       enterAnimationDuration: 250,
       exitAnimationDuration: 250,
     });
