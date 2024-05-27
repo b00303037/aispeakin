@@ -47,6 +47,7 @@ export class SttStreamingComponent implements OnDestroy {
     'target_lang',
     'log_name',
     'save_whole',
+    'accepted_min_lang_prob',
     'stt_only',
   ];
   mode = Mode.SingleSided;
@@ -92,6 +93,7 @@ export class SttStreamingComponent implements OnDestroy {
             target_lang,
             log_name,
             save_whole,
+            accepted_min_lang_prob,
             stt_only,
           ] = this.queryParamKeys.map((key) => queryParamMap.get(key));
 
@@ -106,6 +108,7 @@ export class SttStreamingComponent implements OnDestroy {
           }
           this.recorderService.log_name = log_name;
           this.recorderService.save_whole = save_whole;
+          this.recorderService.accepted_min_lang_prob = accepted_min_lang_prob;
           this.recorderService.stt_only = stt_only;
         })
       )
@@ -188,6 +191,7 @@ export class SttStreamingComponent implements OnDestroy {
       _target_lang,
       _log_name,
       _save_whole,
+      _accepted_min_lang_prob,
       _stt_only,
     ] = this.queryParamKeys.map((key) =>
       this.route.snapshot.queryParamMap.get(key)
@@ -198,6 +202,7 @@ export class SttStreamingComponent implements OnDestroy {
       target_lang,
       log_name,
       save_whole,
+      accepted_min_lang_prob,
       stt_only,
     } = this.recorderService;
 
@@ -207,6 +212,7 @@ export class SttStreamingComponent implements OnDestroy {
       target_lang: _target_lang ?? target_lang,
       log_name: _log_name ?? log_name,
       save_whole: _save_whole ?? save_whole,
+      accepted_min_lang_prob: accepted_min_lang_prob ?? _accepted_min_lang_prob,
       stt_only: _stt_only ?? stt_only,
     };
 
