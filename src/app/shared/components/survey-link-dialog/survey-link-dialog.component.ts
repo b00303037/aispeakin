@@ -12,6 +12,7 @@ import {
   Subject,
   catchError,
   finalize,
+  startWith,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -35,6 +36,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AddUserFeedbackFCs } from './survey-link-dialog.models';
+import { Lang } from '../../enums/lang.enum';
 import { SnackType } from '../../enums/snack-type.enum';
 import { SnackBarService } from '../../services/snack-bar.service';
 import { AbstractXService } from '../../../api/abstract/abstract-x.service';
@@ -69,7 +71,7 @@ export class SurveyLinkDialogComponent implements OnDestroy {
   private destroy$ = new Subject<null>();
   selectedIndex = 0;
 
-  langFC = new FormControl('zh-tw', { validators: [Validators.required] });
+  langFC = new FormControl('en', { validators: [Validators.required] });
 
   fg = new FormGroup<AddUserFeedbackFCs>({
     experience: new FormControl(null, {
@@ -108,73 +110,6 @@ export class SurveyLinkDialogComponent implements OnDestroy {
     return this.fg.getRawValue();
   }
 
-  QUESTIONS_ZHTW = [
-    {
-      question:
-        '您對於 AI 即時翻譯助手的 <strong>使用體驗</strong> 感到滿意嗎？',
-      options: [
-        { label: '非常滿意', value: 2 },
-        { label: '滿意', value: 1 },
-        { label: '一般', value: 0 },
-        { label: '不滿意', value: -1 },
-        { label: '非常不滿意', value: -2 },
-      ],
-    },
-    {
-      question: '您對於 AI 即時翻譯助手的 <strong>速度準確度</strong> 滿意嗎？',
-      options: [
-        { label: '非常滿意', value: 2 },
-        { label: '滿意', value: 1 },
-        { label: '一般', value: 0 },
-        { label: '不滿意', value: -1 },
-        { label: '非常不滿意', value: -2 },
-      ],
-    },
-    {
-      question:
-        '您認為 AI 即時翻譯助手的 <strong>介面操作</strong> 是否簡便易用？',
-      options: [
-        { label: '非常簡便', value: 2 },
-        { label: '簡便', value: 1 },
-        { label: '一般', value: 0 },
-        { label: '複雜', value: -1 },
-        { label: '非常複雜', value: -2 },
-      ],
-    },
-    {
-      question: '您同意 AI 即時翻譯助手有助於 <strong>商洽溝通</strong> 嗎？',
-      options: [
-        { label: '非常同意', value: 2 },
-        { label: '同意', value: 1 },
-        { label: '一般', value: 0 },
-        { label: '不同意', value: -1 },
-        { label: '非常不同意', value: -2 },
-      ],
-    },
-    {
-      question: '整體來說，您覺得 AI 即時翻譯助手能幫助您參觀展覽嗎？',
-      options: [
-        { label: '是', value: 1 },
-        { label: '否', value: 0 },
-      ],
-    },
-    {
-      question:
-        '透過 AI 即時翻譯助手進行商洽，能為您的公司創造多少 <strong>潛在營收</strong>？',
-      options: [
-        { label: '高於 1,000 萬美元', value: 6 },
-        { label: '500 萬美元', value: 5 },
-        { label: '100 萬美元', value: 4 },
-        { label: '50 萬美元', value: 3 },
-        { label: '10 萬美元', value: 2 },
-        { label: '低於 10 萬美元', value: 1 },
-      ],
-    },
-    {
-      question: '歡迎留下您的 <strong>電子郵件信箱</strong>！',
-      options: [],
-    },
-  ];
   QUESTIONS_EN = [
     {
       question:
@@ -245,7 +180,144 @@ export class SurveyLinkDialogComponent implements OnDestroy {
       options: [],
     },
   ];
-  question = this.QUESTIONS_ZHTW;
+  QUESTIONS_ZHTW = [
+    {
+      question:
+        '您對於 AI 即時翻譯助手的 <strong>使用體驗</strong> 感到滿意嗎？',
+      options: [
+        { label: '非常滿意', value: 2 },
+        { label: '滿意', value: 1 },
+        { label: '一般', value: 0 },
+        { label: '不滿意', value: -1 },
+        { label: '非常不滿意', value: -2 },
+      ],
+    },
+    {
+      question: '您對於 AI 即時翻譯助手的 <strong>速度準確度</strong> 滿意嗎？',
+      options: [
+        { label: '非常滿意', value: 2 },
+        { label: '滿意', value: 1 },
+        { label: '一般', value: 0 },
+        { label: '不滿意', value: -1 },
+        { label: '非常不滿意', value: -2 },
+      ],
+    },
+    {
+      question:
+        '您認為 AI 即時翻譯助手的 <strong>介面操作</strong> 是否簡便易用？',
+      options: [
+        { label: '非常簡便', value: 2 },
+        { label: '簡便', value: 1 },
+        { label: '一般', value: 0 },
+        { label: '複雜', value: -1 },
+        { label: '非常複雜', value: -2 },
+      ],
+    },
+    {
+      question: '您同意 AI 即時翻譯助手有助於 <strong>商洽溝通</strong> 嗎？',
+      options: [
+        { label: '非常同意', value: 2 },
+        { label: '同意', value: 1 },
+        { label: '一般', value: 0 },
+        { label: '不同意', value: -1 },
+        { label: '非常不同意', value: -2 },
+      ],
+    },
+    {
+      question: '整體來說，您覺得 AI 即時翻譯助手能幫助您參觀展覽嗎？',
+      options: [
+        { label: '是', value: 1 },
+        { label: '否', value: 0 },
+      ],
+    },
+    {
+      question:
+        '透過 AI 即時翻譯助手進行商洽，能為您的公司創造多少 <strong>潛在營收</strong>？',
+      options: [
+        { label: '高於 1,000 萬美元', value: 6 },
+        { label: '500 萬美元', value: 5 },
+        { label: '100 萬美元', value: 4 },
+        { label: '50 萬美元', value: 3 },
+        { label: '10 萬美元', value: 2 },
+        { label: '低於 10 萬美元', value: 1 },
+      ],
+    },
+    {
+      question: '歡迎留下您的 <strong>電子郵件信箱</strong>！',
+      options: [],
+    },
+  ];
+  QUESTIONS_JA = [
+    {
+      question:
+        'AI リアルタイム翻訳アシスタントの <strong>使用体験</strong> に満足していますか？',
+      options: [
+        { label: '満足', value: 2 },
+        { label: 'やや満足', value: 1 },
+        { label: 'どちらともいえない', value: 0 },
+        { label: 'やや不満足', value: -1 },
+        { label: '不満足', value: -2 },
+      ],
+    },
+    {
+      question:
+        'AI リアルタイム翻訳アシスタントの <strong>応答速度と翻訳精度</strong> に満足していますか？',
+      options: [
+        { label: '満足', value: 2 },
+        { label: 'やや満足', value: 1 },
+        { label: 'どちらともいえない', value: 0 },
+        { label: 'やや不満足', value: -1 },
+        { label: '不満足', value: -2 },
+      ],
+    },
+    {
+      question:
+        'AI リアルタイム翻訳アシスタントの <strong>ユーザーインターフェース</strong> は、使いやすいと感じますか？',
+      options: [
+        { label: '使いやすい', value: 2 },
+        { label: 'やや使いやすい', value: 1 },
+        { label: 'どちらともいえない', value: 0 },
+        { label: 'やや使いにくい', value: -1 },
+        { label: '使いにくい', value: -2 },
+      ],
+    },
+    {
+      question:
+        'AI リアルタイム翻訳アシスタントは <strong>商談</strong> に役立つと思いますか？',
+      options: [
+        { label: 'そう思う', value: 2 },
+        { label: 'ややそう思う', value: 1 },
+        { label: 'どちらともいえない', value: 0 },
+        { label: 'あまりそう思わない', value: -1 },
+        { label: 'そう思わない', value: -2 },
+      ],
+    },
+    {
+      question:
+        'AI リアルタイム翻訳アシスタントは今回の展示会の参加に役立つと思いますか？',
+      options: [
+        { label: 'はい', value: 1 },
+        { label: 'いいえ', value: 0 },
+      ],
+    },
+    {
+      question:
+        '今回、AI リアルタイム翻訳アシスタントを使用した商談は、貴社にどれくらいの <strong>潜在的な収益</strong> がもたらすと思いますか？',
+      options: [
+        { label: '1,000 万米ドル以上', value: 6 },
+        { label: '500 万米ドル', value: 5 },
+        { label: '100 万米ドル', value: 4 },
+        { label: '50 万米ドル', value: 3 },
+        { label: '10 万米ドル', value: 2 },
+        { label: '10 万米ドル未満', value: 1 },
+      ],
+    },
+    {
+      question: '<strong>メールアドレス</strong> をご記入ください！',
+      options: [],
+    },
+  ];
+  question = this.QUESTIONS_EN;
 
   adding = false;
 
@@ -258,13 +330,23 @@ export class SurveyLinkDialogComponent implements OnDestroy {
     this.langFC.valueChanges
       .pipe(
         takeUntil(this.destroy$),
+        startWith(this.langFC.value),
         tap((_lang) => {
+          if (_lang !== null && Object.values(Lang).includes(_lang as Lang)) {
+            this.t.use(_lang);
+
+            document.documentElement.setAttribute('lang', _lang);
+          }
+
           switch (_lang) {
+            case 'en':
+              this.question = this.QUESTIONS_EN;
+              break;
             case 'zh-tw':
               this.question = this.QUESTIONS_ZHTW;
               break;
-            case 'en':
-              this.question = this.QUESTIONS_EN;
+            case 'ja':
+              this.question = this.QUESTIONS_JA;
               break;
           }
         })

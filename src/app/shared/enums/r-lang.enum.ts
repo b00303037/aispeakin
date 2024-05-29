@@ -4,7 +4,18 @@ export enum RLang {
   ZH = 'zh',
   EN = 'en',
   JA = 'ja',
-  // KO = 'ko',
+  KO = 'ko',
+  TH = 'th',
+  VI = 'vi',
+  MS = 'ms',
+  ID = 'id',
+  FR = 'fr',
+  ES = 'es',
+  PT = 'pt',
+  DE = 'de',
+  RU = 'ru',
+  IT = 'it',
+  AR = 'ar',
 }
 
 export const RLANG_OPTION_LIST: OptionList<RLang> = [

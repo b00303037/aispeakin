@@ -24,13 +24,11 @@
         class="flex flex-col items-stretch"
         [formControl]="langFC"
       >
-        <mat-radio-button class="example-radio-button" [value]="'zh-tw'">
-          中文表單
-        </mat-radio-button>
+        <mat-radio-button [value]="'en'"> English Form </mat-radio-button>
 
-        <mat-radio-button class="example-radio-button" [value]="'en'">
-          English Form
-        </mat-radio-button>
+        <mat-radio-button [value]="'zh-tw'"> 中文表單 </mat-radio-button>
+
+        <mat-radio-button [value]="'ja'"> 日本語のフォーム </mat-radio-button>
       </mat-radio-group>
     </mat-tab>
 

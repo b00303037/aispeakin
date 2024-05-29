@@ -27,7 +27,23 @@ export class RecorderService {
   recording$ = new BehaviorSubject<boolean>(false);
 
   private _APIKey?: string = '';
-  private _candidates: Array<string> = [RLang.ZH, RLang.EN, RLang.JA];
+  private _candidates: Array<string> = [
+    RLang.ZH,
+    RLang.EN,
+    RLang.JA,
+    RLang.KO,
+    RLang.TH,
+    RLang.VI,
+    RLang.MS,
+    RLang.ID,
+    RLang.FR,
+    RLang.ES,
+    RLang.PT,
+    RLang.DE,
+    RLang.RU,
+    RLang.IT,
+    RLang.AR,
+  ];
   private _main_lang: string = RLang.ZH;
   private _target_lang: string = RLang.EN;
   private _log_name: string | null = null;

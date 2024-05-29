@@ -3,7 +3,7 @@ const apiVersion = 1;
 export const environment = {
   mock: false,
   production: true,
-  version: '0.10',
+  version: '0.11',
 
   wsUrl: 'wss://_s7.stt.ubestream.com/wssapi_s7/',
 
