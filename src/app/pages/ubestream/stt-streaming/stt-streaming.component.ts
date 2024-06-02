@@ -18,6 +18,8 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { RecorderService } from '../../../shared/services/recorder.service';
 import { STTStreamingService } from '../../../shared/services/stt-streaming.service';
 
+import { environment } from '../../../../environments/environment';
+
 @Component({
   selector: 'app-stt-streaming',
   standalone: true,
@@ -69,6 +71,17 @@ export class SttStreamingComponent implements OnDestroy {
       return;
     } else {
       this.recorderService.APIKey = APIKey;
+    }
+
+    switch (this.route.snapshot.pathFromRoot.at(-1)?.routeConfig?.path) {
+      case 's6/stt-streaming':
+        this.recorderService.wsUrl = environment.wsUrlS6;
+        break;
+      case 's7/stt-streaming':
+        this.recorderService.wsUrl = environment.wsUrlS7;
+        break;
+      default:
+        this.recorderService.wsUrl = environment.wsUrl;
     }
 
     this.breakpointObserver

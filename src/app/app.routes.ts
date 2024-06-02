@@ -16,6 +16,20 @@ export const routes: Routes = [
     canActivateChild: [authGuard],
     children: [
       {
+        path: 's6/stt-streaming',
+        component: SttStreamingComponent,
+        resolve: {
+          APIKey: APIKeyResolver,
+        },
+      },
+      {
+        path: 's7/stt-streaming',
+        component: SttStreamingComponent,
+        resolve: {
+          APIKey: APIKeyResolver,
+        },
+      },
+      {
         path: 'stt-streaming',
         component: SttStreamingComponent,
         resolve: {
