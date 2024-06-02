@@ -24,7 +24,7 @@
     "HIDE_PASSWORD": "Hide password",
     "SHOW_PASSWORD": "Show password",
     "ERROR": {
-      "USERNAME_REQUIRED": "Enter a email",
+      "USERNAME_REQUIRED": "Enter an email",
       "USERNAME_EMAIL": "Email is invalid",
       "PASSWORD_REQUIRED": "Enter a password"
     }
@@ -38,7 +38,7 @@
     "HIDE_PASSWORD": "Hide password",
     "SHOW_PASSWORD": "Show password",
     "ERROR": {
-      "USERNAME_REQUIRED": "Enter a email",
+      "USERNAME_REQUIRED": "Enter an email",
       "USERNAME_EMAIL": "Email is invalid",
       "PASSWORD_REQUIRED": "Enter a password",
       "PASSWORD_MINLENGTH": "Please enter a password with at least 8 characters",
@@ -88,28 +88,29 @@
     "PREV": "Previous",
     "SUBMIT": "Submit"
   },
-  "API": {
-    "ERROR": "An unexpected error occurred. Please try again later.",
-    "LOGIN": {
-      "SUCCESS": "Login successful.",
-      "USERNAME_REQUIRED": "Email is a required field.",
-      "PASSWORD_REQUIRED": "Password is a required field.",
-      "FAILURE": "Incorrect email or password."
+  "api": {
+    "error": "An unexpected error occurred. Please try again later.",
+    "expiration": "The login authentication has expired. Please log in again.",
+    "login": {
+      "success": "Login successful.",
+      "username_required": "Email is a required field.",
+      "password_required": "Password is a required field.",
+      "failure": "Incorrect email or password."
     },
-    "REGISTER": {
-      "SUCCESS": "Registration successful.",
-      "USERNAME_REQUIRED": "Email is a required field.",
-      "USERNAME_MAX_LENGTH": "Email has a maximum length of 50 characters.",
-      "USERNAME_PATTERN": "Incorrect email format.",
-      "USERNAME_UNIQUE": "This email has already been registered.",
-      "PASSWORD_REQUIRED": "Password is a required field.",
-      "PASSWORD_MIN_LENGTH": "Password must be at least 8 characters long.",
-      "PASSWORD_MAX_LENGTH": "Password has a maximum length of 50 characters."
+    "register": {
+      "success": "Registration successful.",
+      "username_required": "Email is a required field.",
+      "username_max_length": "Email has a maximum length of 50 characters.",
+      "username_pattern": "Incorrect email format.",
+      "username_unique": "This email has already been registered.",
+      "password_required": "Password is a required field.",
+      "password_min_length": "Password must be at least 8 characters long.",
+      "password_max_length": "Password has a maximum length of 50 characters."
     },
-    "ADD_USER_FEEDBACK": {
-      "SUCCESS": "We have received your response.",
-      "EMAIL_MAX_LENGTH": "Email has a maximum length of 50 characters.",
-      "EMAIL_PATTERN": "Incorrect email format."
+    "add_user_feedback": {
+      "success": "We have received your response.",
+      "email_max_length": "Email has a maximum length of 50 characters.",
+      "email_pattern": "Incorrect email format."
     }
   }
 }
