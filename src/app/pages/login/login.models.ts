@@ -4,7 +4,7 @@ export interface LoginFCs {
   /**
    * 帳號
    */
-  username: FormControl<string>;
+  account: FormControl<string>;
   /**
    * 密碼
    */

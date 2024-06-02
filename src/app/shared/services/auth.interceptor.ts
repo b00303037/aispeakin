@@ -24,24 +24,22 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((err) => {
         console.error(err);
 
-        let code = BaseAPICode.DEFAULT_ERROR;
-        let message = '很抱歉，發生未預期的錯誤，請稍後再試一次';
+        let code = BaseAPICode.InternalServerError;
+        let msg_key = 'API.ERROR';
 
-        if (err instanceof HttpErrorResponse && err.status === 401) {
-          code = BaseAPICode.AUTH_ERROR;
-          message = '登入認證已過期，請重新登入';
-
-          // TODO: refresh token
+        if (err instanceof HttpErrorResponse && err.status === 403) {
+          code = BaseAPICode.Forbidden;
+          msg_key = 'API.EXPIRATION';
 
           this.authService.loggedIn$.next(false);
         }
 
         return throwError(
           (): BaseAPIResModel<null> => ({
-            success: false,
             code,
-            message,
-            content: null,
+            msg: '',
+            msg_key,
+            data: null,
           })
         );
       })

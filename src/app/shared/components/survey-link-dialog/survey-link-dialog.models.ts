@@ -1,11 +1,11 @@
 import { FormControl } from '@angular/forms';
 
-export interface AddUserFeedbackFCs {
+export interface SubmitFCs {
   experience: FormControl<number | null>;
-  speedAndAccuracy: FormControl<number | null>;
-  interface: FormControl<number | null>;
-  businessComm: FormControl<number | null>;
+  speed_and_accuracy: FormControl<number | null>;
+  user_interface: FormControl<number | null>;
+  business_comm: FormControl<number | null>;
   exhibitions: FormControl<number | null>;
-  potentialRevenue: FormControl<number | null>;
+  potential_revenue: FormControl<number | null>;
   email: FormControl<string>;
 }

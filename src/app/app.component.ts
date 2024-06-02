@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import {
   Subject,
@@ -22,7 +22,7 @@ import { onThemeChange } from './shared/services/utils';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<null>();
 
   constructor(
@@ -69,6 +69,15 @@ export class AppComponent implements OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  ngOnInit(): void {
+    const defaultLang = Object.values(Lang).includes(localStorage['lang'])
+      ? localStorage['lang']
+      : Lang.EN;
+
+    this.t.setDefaultLang(defaultLang);
+    this.t.use(defaultLang);
   }
 
   ngOnDestroy(): void {

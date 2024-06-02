@@ -6,16 +6,16 @@ import {
 } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 
-import { AbstractXService } from '../../api/abstract/abstract-x.service';
+import { AbstractStreamServerService } from '../../api/abstract/abstract-stream-server.service';
 
 export const APIKeyResolver: ResolveFn<string> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  return inject(AbstractXService)
-    .XGetAPIKey({})
+  return inject(AbstractStreamServerService)
+    .GetAPIKey()
     .pipe(
-      map((res) => res.content),
+      map((res) => res.data),
       catchError((err) => of(''))
     );
 };

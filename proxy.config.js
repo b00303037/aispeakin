@@ -1,8 +1,7 @@
 module.exports = [
   {
     context: ["/api"],
-    target: "https://localhost:44312",
-    // target: "https://dev.stardusttw.com",
+    target: "https://aispeak.in",
     secure: false,
     changeOrigin: true,
     logLevel: "debug",

@@ -2,8 +2,6 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const apiVersion = 1;
-
 export const environment = {
   mock: false,
   production: false,
@@ -11,11 +9,8 @@ export const environment = {
 
   wsUrl: 'wss://_s7.stt.ubestream.com/wssapi_s7/',
 
-  /* FOR LOCAL API */
-  // baseApiUrl: `https://localhost:44312/api/v${apiVersion}`,
-  // allowedDomains: ['localhost:44312'],
   /* FOR DEV API */
-  baseApiUrl: `/api/v${apiVersion}`,
+  baseApiUrl: `/api`,
   allowedDomains: ['/api'],
 
   tokenKey: 'dev:aispeakin:token',

@@ -12,12 +12,17 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from './app.routes';
-import { Lang } from './shared/enums/lang.enum';
 import { tokenGetter } from './shared/services/utils';
 import { AuthInterceptor } from './shared/services/auth.interceptor';
-import { AbstractXService } from './api/abstract/abstract-x.service';
-import { XMockService } from './api-mock/x-mock.service';
-import { XService } from './api/x.service';
+import { AbstractFeedbackService } from './api/abstract/abstract-feedback.service';
+import { AbstractStreamServerService } from './api/abstract/abstract-stream-server.service';
+import { AbstractUserService } from './api/abstract/abstract-user.service';
+import { FeedbackMockService } from './api-mock/feedback-mock.service';
+import { StreamServerMockService } from './api-mock/stream-server-mock.service';
+import { UserMockService } from './api-mock/user-mock.service';
+import { FeedbackService } from './api/feedback.service';
+import { StreamServerService } from './api/stream-server.service';
+import { UserService } from './api/user.service';
 
 import { environment } from '../environments/environment';
 
@@ -31,8 +36,18 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
-      provide: AbstractXService,
-      useClass: environment.mock ? XMockService : XService,
+      provide: AbstractFeedbackService,
+      useClass: environment.mock ? FeedbackMockService : FeedbackService,
+    },
+    {
+      provide: AbstractStreamServerService,
+      useClass: environment.mock
+        ? StreamServerMockService
+        : StreamServerService,
+    },
+    {
+      provide: AbstractUserService,
+      useClass: environment.mock ? UserMockService : UserService,
     },
     importProvidersFrom(
       JwtModule.forRoot({
@@ -45,9 +60,6 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom([
       TranslateModule.forRoot({
-        defaultLanguage: Object.values(Lang).includes(localStorage['lang'])
-          ? localStorage['lang']
-          : Lang.ZHTW,
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,

@@ -24,143 +24,69 @@
         class="flex flex-col items-stretch"
         [formControl]="langFC"
       >
-        <mat-radio-button [value]="'en'"> English Form </mat-radio-button>
+        <mat-radio-button [value]="langObj.EN"> English Form </mat-radio-button>
 
-        <mat-radio-button [value]="'zh-tw'"> 中文表單 </mat-radio-button>
+        <mat-radio-button [value]="langObj.ZHTW"> 中文表單 </mat-radio-button>
 
-        <mat-radio-button [value]="'ja'"> 日本語のフォーム </mat-radio-button>
+        <mat-radio-button [value]="langObj.JA">
+          日本語のフォーム
+        </mat-radio-button>
       </mat-radio-group>
     </mat-tab>
 
     <mat-tab>
-      <div>
-        <span class="text-warn">* </span>
-        <span [innerHTML]="question[0].question"></span>
-      </div>
-      <mat-radio-group
-        class="flex flex-col items-stretch mb-8"
-        [formControl]="fcs['experience']"
-        required
-      >
-        <ng-template ngFor let-option [ngForOf]="question[0].options">
-          <mat-radio-button [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
+      <ng-container *ngIf="questions">
+        <ng-template ngFor let-name [ngForOf]="mcqFCNames" let-i="index">
+          <div>
+            <span class="text-warn">* </span>
+            <span [innerHTML]="questions[i].question"></span>
+          </div>
+          <mat-radio-group
+            class="flex flex-col items-stretch mb-8"
+            [formControl]="fcs[name]"
+            required
+          >
+            <ng-template ngFor let-option [ngForOf]="questions[i].options">
+              <mat-radio-button [value]="option.value">
+                {{ option.label }}
+              </mat-radio-button>
+            </ng-template>
+          </mat-radio-group>
         </ng-template>
-      </mat-radio-group>
 
-      <div>
-        <span class="text-warn">* </span>
-        <span [innerHTML]="question[1].question"></span>
-      </div>
-      <mat-radio-group
-        class="flex flex-col items-stretch mb-8"
-        [formControl]="fcs['speedAndAccuracy']"
-        required
-      >
-        <ng-template ngFor let-option [ngForOf]="question[1].options">
-          <mat-radio-button [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
-        </ng-template>
-      </mat-radio-group>
+        <div>
+          <span [innerHTML]="questions[6].question"></span>
+        </div>
+        <mat-form-field class="w-full mt-2" appearance="fill">
+          <input
+            type="text"
+            inputmode="email"
+            matInput
+            [formControl]="fcs['email']"
+            maxlength="50"
+          />
 
-      <div>
-        <span class="text-warn">* </span>
-        <span [innerHTML]="question[2].question"></span>
-      </div>
-      <mat-radio-group
-        class="flex flex-col items-stretch mb-8"
-        [formControl]="fcs['interface']"
-        required
-      >
-        <ng-template ngFor let-option [ngForOf]="question[2].options">
-          <mat-radio-button [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
-        </ng-template>
-      </mat-radio-group>
+          <mat-icon matPrefix>email</mat-icon>
 
-      <div>
-        <span class="text-warn">* </span>
-        <span [innerHTML]="question[3].question"></span>
-      </div>
-      <mat-radio-group
-        class="flex flex-col items-stretch mb-8"
-        [formControl]="fcs['businessComm']"
-        required
-      >
-        <ng-template ngFor let-option [ngForOf]="question[3].options">
-          <mat-radio-button [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
-        </ng-template>
-      </mat-radio-group>
+          <mat-hint align="end"
+            >{{ fcs["email"].value.length || 0 }} / 50</mat-hint
+          >
 
-      <div>
-        <span class="text-warn">* </span>
-        <span [innerHTML]="question[4].question"></span>
-      </div>
-      <mat-radio-group
-        class="flex flex-col items-stretch mb-8"
-        [formControl]="fcs['exhibitions']"
-        required
-      >
-        <ng-template ngFor let-option [ngForOf]="question[4].options">
-          <mat-radio-button [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
-        </ng-template>
-      </mat-radio-group>
+          <mat-icon
+            *ngIf="fcs['email'].value"
+            matSuffix
+            class="cursor-pointer"
+            [matTooltip]="'REGISTER.CLEAR' | translate"
+            (click)="fcs['email'].reset()"
+          >
+            clear
+          </mat-icon>
 
-      <div>
-        <span class="text-warn">* </span>
-        <span [innerHTML]="question[5].question"></span>
-      </div>
-      <mat-radio-group
-        class="flex flex-col items-stretch mb-8"
-        [formControl]="fcs['potentialRevenue']"
-        required
-      >
-        <ng-template ngFor let-option [ngForOf]="question[5].options">
-          <mat-radio-button [value]="option.value">
-            {{ option.label }}
-          </mat-radio-button>
-        </ng-template>
-      </mat-radio-group>
-
-      <div>
-        <span [innerHTML]="question[6].question"></span>
-      </div>
-      <mat-form-field class="w-full mt-2" appearance="fill">
-        <input
-          type="text"
-          inputmode="email"
-          matInput
-          [formControl]="fcs['email']"
-          maxlength="50"
-        />
-
-        <mat-icon matPrefix>email</mat-icon>
-
-        <mat-hint align="end"
-          >{{ fcs["email"].value.length || 0 }} / 50</mat-hint
-        >
-
-        <mat-icon
-          *ngIf="fcs['email'].value"
-          matSuffix
-          class="cursor-pointer"
-          [matTooltip]="'REGISTER.CLEAR' | translate"
-          (click)="fcs['email'].reset()"
-        >
-          clear
-        </mat-icon>
-
-        <mat-error *ngIf="fcs['email'].hasError('email')">{{
-          "REGISTER.ERROR.USERNAME_EMAIL" | translate
-        }}</mat-error>
-      </mat-form-field>
+          <mat-error *ngIf="fcs['email'].hasError('email')">{{
+            "REGISTER.ERROR.USERNAME_EMAIL" | translate
+          }}</mat-error>
+        </mat-form-field>
+      </ng-container>
     </mat-tab>
   </mat-tab-group>
 </div>
@@ -193,7 +119,7 @@
       mat-flat-button
       color="primary"
       [disabled]="fg.invalid"
-      (click)="onAddUserFeedback()"
+      (click)="onSubmit()"
     >
       @if (adding) {
       <mat-spinner diameter="24"></mat-spinner>

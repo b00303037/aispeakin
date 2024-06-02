@@ -20,9 +20,6 @@ export class STTStreamingService {
     messageO: MessageO,
     info: { prefix: number; main_lang: string }
   ): void {
-    console.warn('--- addOrUpdate ---');
-    console.log(messageO);
-
     const messageX: MessageX = this.transformO(messageO, info);
 
     const _list = this.messageList$.getValue();
@@ -32,19 +29,13 @@ export class STTStreamingService {
       messageX.trackId = `${messageX.mid}-${1}`;
 
       _list.push(messageX);
-
-      console.log('--- add ---');
     } else {
       const trackSeq = +_list[_index].trackId.split('-').slice(-1)[0];
 
       messageX.trackId = `${messageX.mid}-${trackSeq + 1}`;
 
       _list[_index] = messageX;
-
-      console.log('--- update ---');
     }
-
-    console.log(messageX);
 
     this.messageList$.next(_list);
   }

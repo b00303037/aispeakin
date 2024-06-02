@@ -14,10 +14,10 @@ export class BaseApiService {
   protected baseApiUrl = environment.baseApiUrl;
 
   private defaultError: BaseAPIResModel<null> = {
-    success: false,
-    code: BaseAPICode.DEFAULT_ERROR,
-    message: '很抱歉，發生未預期的錯誤，請稍後再試一次',
-    content: null,
+    code: BaseAPICode.InternalServerError,
+    msg: '',
+    msg_key: 'API.ERROR',
+    data: null,
   };
 
   constructor(protected http: HttpClient) {}
@@ -50,10 +50,10 @@ export class BaseApiService {
   }
 
   protected throwNotIn<T>(codes: Array<BaseAPICode>, res: BaseAPIResModel<T>) {
-    const { code, message } = res;
+    const { code, msg_key } = res;
 
     if (!codes.includes(code)) {
-      return throwError(() => ({ code, message }));
+      return throwError(() => ({ code, msg_key }));
     }
     return of(res);
   }

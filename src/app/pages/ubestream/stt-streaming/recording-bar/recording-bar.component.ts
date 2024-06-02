@@ -7,7 +7,15 @@ import {
 } from '@angular/core';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, distinctUntilChanged, takeUntil, tap } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  Subject,
+  catchError,
+  distinctUntilChanged,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 
 // @angular/material
@@ -19,6 +27,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MessageO } from '../stt-streaming.models';
+import { AbstractStreamServerService } from '../../../../api/abstract/abstract-stream-server.service';
+import { BaseAPIResModel } from '../../../../api/models/base-api.models';
 import { SurveyLinkDialogComponent } from '../../../../shared/components/survey-link-dialog/survey-link-dialog.component';
 import { RLANG_OPTION_LIST, RLang } from '../../../../shared/enums/r-lang.enum';
 import { MediaQuery } from '../../../../shared/enums/media-query.enum';
@@ -85,6 +95,7 @@ export class RecordingBarComponent implements OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private matDialog: MatDialog,
+    private streamServerService: AbstractStreamServerService,
     private STTStreamingService: STTStreamingService,
     public recorderService: RecorderService
   ) {
@@ -122,12 +133,24 @@ export class RecordingBarComponent implements OnDestroy {
 
   onStartRecording(): void {
     this.recorderService.startRecording(this.handleText.bind(this));
+
+    this.onAddLog();
   }
 
   onStopRecording(): void {
     this.recorderService.stopRecording();
 
     this.openSurveyLinkDialog();
+  }
+
+  onAddLog(): void {
+    this.streamServerService
+      .AddLog()
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((err) => this.onError(err))
+      )
+      .subscribe();
   }
 
   openSurveyLinkDialog(): void {
@@ -145,10 +168,6 @@ export class RecordingBarComponent implements OnDestroy {
       let messageOList: Array<MessageO> = [];
       let data: MessageO | Array<MessageO> = JSON.parse(text);
 
-      console.log(new Date());
-      console.log(data);
-      console.log('---');
-
       messageOList = Array.isArray(data) ? [...data] : [data];
 
       const { prefix, main_lang } = this.recorderService;
@@ -163,6 +182,12 @@ export class RecordingBarComponent implements OnDestroy {
 
   onClearConversation(): void {
     this.STTStreamingService.clear();
+  }
+
+  onError(err: BaseAPIResModel<null>): Observable<never> {
+    console.error(err);
+
+    return EMPTY;
   }
 
   ngOnDestroy(): void {

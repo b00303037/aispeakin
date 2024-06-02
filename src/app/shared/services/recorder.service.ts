@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { RLang } from '../enums/r-lang.enum';
 import { environment } from '../../../environments/environment';
 
+// TODO: TEST RECONNECT
+
 @Injectable({
   providedIn: 'root',
 })
@@ -21,10 +23,15 @@ export class RecorderService {
     outputSampleBits: number;
     input: (data: number[]) => void;
     clear: () => void;
+    shift: () => void;
     encodeHeaderlessWavData: () => Promise<ArrayBuffer>;
   };
 
   recording$ = new BehaviorSubject<boolean>(false);
+
+  private RECONNECT_WAIT_MS_INIT = 500;
+  private RECONNECT_WAIT_INC = 500;
+  private RECONNECT_WAIT_MS_MAX = 5000;
 
   private _APIKey?: string = '';
   private _candidates: Array<string> = [
@@ -44,6 +51,7 @@ export class RecorderService {
     RLang.IT,
     RLang.AR,
   ];
+  // TODO: change main_lang & target_lang ?
   private _main_lang: string = RLang.ZH;
   private _target_lang: string = RLang.EN;
   private _log_name: string | null = null;
@@ -51,6 +59,9 @@ export class RecorderService {
   private _accepted_min_lang_prob: string | null = '0.5';
   private _stt_only: string | null = null;
   private _prefix: number = 0;
+  private _close_by_user = false;
+  private _connection_lost = false;
+  private _reconnect_wait_ms = this.RECONNECT_WAIT_MS_INIT;
 
   get APIKey(): string | undefined {
     return this._APIKey;
@@ -105,6 +116,8 @@ export class RecorderService {
   }
 
   startRecording(callback: Function): void {
+    console.warn('startRecording()');
+
     if (this.recording$.getValue()) {
       return;
     }
@@ -114,6 +127,8 @@ export class RecorderService {
     if (this.context === undefined) {
       this.initAudioContext()
         .then(() => {
+          this.context!.resume();
+
           this.startMic(callback);
         })
         .catch((error) => {
@@ -122,11 +137,18 @@ export class RecorderService {
           this.stopRecording();
         });
     } else {
+      this.context!.resume();
+
       this.startMic(callback);
     }
   }
 
   stopRecording(): void {
+    console.warn('stopRecording()');
+
+    this._close_by_user = true;
+    console.log('_close_by_user', true);
+
     if (this.ws !== undefined) {
       this.ws.close();
       this.ws = undefined;
@@ -141,12 +163,16 @@ export class RecorderService {
   }
 
   private initAudioContext(): Promise<void> {
+    console.warn('initAudioContext()');
+
     this.context = new AudioContext();
 
     return this.context.audioWorklet.addModule('assets/relay-worklet.js');
   }
 
   private startMic(callback: Function): void {
+    console.warn('startMic()');
+
     if (navigator.mediaDevices === undefined) {
       this.stopRecording();
 
@@ -155,7 +181,8 @@ export class RecorderService {
       return;
     }
 
-    this._prefix++;
+    this._close_by_user = false;
+    console.log('_close_by_user', false);
     this.newWebSocket(callback);
 
     navigator.mediaDevices
@@ -176,11 +203,19 @@ export class RecorderService {
   }
 
   private newWebSocket(callback: Function): void {
+    console.warn('newWebSocket()');
+
+    this._prefix++;
+
     this.ws = new WebSocket(this.wsUrl);
     this.ws.binaryType = 'arraybuffer';
     this.ws.ACCEPTED = false;
 
     this.ws.addEventListener('open', () => {
+      console.log('--- on ws open ---');
+
+      this._reconnect_wait_ms = this.RECONNECT_WAIT_MS_INIT;
+
       const prob = +(this.accepted_min_lang_prob ?? 0);
 
       this.ws?.send(
@@ -201,6 +236,8 @@ export class RecorderService {
       if (this.ws !== undefined && !this.ws.ACCEPTED) {
         if (message.data === 'OK') {
           this.ws.ACCEPTED = true;
+          this._connection_lost = false;
+          console.log('_connection_lost', false);
         } else {
           this.ws.close();
         }
@@ -209,6 +246,26 @@ export class RecorderService {
       }
 
       callback(message.data);
+    });
+
+    this.ws.addEventListener('close', () => {
+      console.log('--- on ws close ---');
+
+      if (this._close_by_user) {
+        return;
+      }
+
+      this._connection_lost = true;
+      console.log('_connection_lost', true);
+      this.ws = undefined;
+
+      setTimeout(() => {
+        this.newWebSocket(callback);
+      }, this._reconnect_wait_ms);
+
+      if (this._reconnect_wait_ms < this.RECONNECT_WAIT_MS_MAX) {
+        this._reconnect_wait_ms += this.RECONNECT_WAIT_INC;
+      }
     });
   }
 
@@ -233,6 +290,10 @@ export class RecorderService {
       clear: function () {
         this.size = 0;
         this.buffer = [];
+      },
+      shift: function () {
+        let shifted = this.buffer.shift();
+        this.size -= shifted?.length ?? 0;
       },
       encodeHeaderlessWavData: async function () {
         let bytes: Float32Array;
@@ -299,18 +360,41 @@ export class RecorderService {
 
     this.relayNode = new AudioWorkletNode(this.context, 'relay-worklet');
 
-    this.relayNode.port.onmessage = (message: MessageEvent<number[][]>) => {
+    this.relayNode.port.onmessage = (
+      message: MessageEvent<number[][] | string>
+    ) => {
       (async () => {
-        if (
-          this.audioData === undefined ||
-          this.ws === undefined ||
-          this.ws.readyState !== 1 ||
-          !this.ws.ACCEPTED
-        ) {
+        if (typeof message.data == 'string' && message.data == 'closed') {
+          if (this.ws !== undefined) {
+            this.ws.close();
+          }
+
+          this.relayNode?.disconnect();
+          this._connection_lost = false;
+          console.log('_connection_lost', false);
+
           return;
         }
 
-        for (let d of message.data) {
+        if (this.ws === undefined || this.audioData === undefined) {
+          return;
+        }
+
+        if (this._connection_lost) {
+          for (let d of message.data as number[][]) {
+            this.audioData.input(d);
+          }
+
+          while (this.audioData.size > this.audioData.inputSampleRate * 5) {
+            this.audioData.shift();
+          }
+        } else if (this.ws.readyState !== 1 || !this.ws.ACCEPTED) {
+          this.audioData.clear();
+
+          return;
+        }
+
+        for (let d of message.data as number[][]) {
           this.audioData.input(d);
         }
 

@@ -29,9 +29,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { LoginFCs } from './login.models';
-import { AbstractXService } from '../../api/abstract/abstract-x.service';
+import { AbstractUserService } from '../../api/abstract/abstract-user.service';
 import { BaseAPIResModel } from '../../api/models/base-api.models';
-import { XLoginReq } from '../../api/models/x/x-login.models';
+import { LoginReq } from '../../api/models/user/login.models';
 import { AutofocusDirective } from '../../shared/directives/autofocus.directive';
 import { LANG_OPTION_LIST, Lang } from '../../shared/enums/lang.enum';
 import { SnackType } from '../../shared/enums/snack-type.enum';
@@ -67,7 +67,7 @@ export class LoginComponent implements OnDestroy {
   SMQuery: MediaQueryList = this.media.matchMedia('(min-width: 600px)');
 
   fg = new FormGroup<LoginFCs>({
-    username: new FormControl('', {
+    account: new FormControl('', {
       nonNullable: true,
       validators: [
         Validators.required,
@@ -81,7 +81,7 @@ export class LoginComponent implements OnDestroy {
     }),
   });
   fcs: LoginFCs = {
-    username: this.fg.controls['username'],
+    account: this.fg.controls['account'],
     password: this.fg.controls['password'],
   };
   get fv() {
@@ -97,7 +97,7 @@ export class LoginComponent implements OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
     private router: Router,
-    private xService: AbstractXService,
+    private userService: AbstractUserService,
     private authService: AuthService,
     private snackBarService: SnackBarService,
     public t: TranslateService
@@ -120,26 +120,27 @@ export class LoginComponent implements OnDestroy {
     }
     this.loggingIn = true;
 
-    const { username, password } = this.fv;
-    const req: XLoginReq = {
-      username,
+    const { account, password } = this.fv;
+    const req: LoginReq = {
+      account,
       password,
     };
 
-    this.xService
-      .XLogin(req)
+    this.userService
+      .Login(req)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => (this.loggingIn = false)),
         tap((res) => {
-          const { accessToken } = res.content;
+          const { token } = res.data;
 
-          this.authService.token = accessToken;
+          this.authService.token = token;
 
           if (this.authService.validateToken()) {
             this.authService.loggedIn$.next(true);
+            this.authService.account = account;
 
-            this.t.get(res.message).subscribe((message) => {
+            this.t.get(res.msg_key).subscribe((message) => {
               this.snackBarService.add({
                 message,
                 type: SnackType.Success,
@@ -159,7 +160,7 @@ export class LoginComponent implements OnDestroy {
   onError(err: BaseAPIResModel<null>): Observable<never> {
     console.error(err);
 
-    this.t.get(err.message).subscribe((message) => {
+    this.t.get(err.msg_key).subscribe((message) => {
       this.snackBarService.add({
         message,
         type: SnackType.Error,

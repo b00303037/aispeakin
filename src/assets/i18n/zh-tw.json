@@ -88,28 +88,29 @@
     "PREV": "上一步",
     "SUBMIT": "送出"
   },
-  "API": {
-    "ERROR": "發生未預期的錯誤，請稍後再試",
-    "LOGIN": {
-      "SUCCESS": "登入成功",
-      "USERNAME_REQUIRED": "Email 為必填欄位",
-      "PASSWORD_REQUIRED": "密碼為必填欄位",
-      "FAILURE": "帳號或密碼有誤"
+  "api": {
+    "error": "發生未預期的錯誤，請稍後再試",
+    "expiration": "登入認證已過期，請重新登入",
+    "login": {
+      "success": "登入成功",
+      "username_required": "Email 為必填欄位",
+      "password_required": "密碼為必填欄位",
+      "failure": "帳號或密碼有誤"
     },
-    "REGISTER": {
-      "SUCCESS": "註冊成功",
-      "USERNAME_REQUIRED": "Email 為必填欄位",
-      "USERNAME_MAX_LENGTH": "Email 最大長度為 50 個字元",
-      "USERNAME_PATTERN": "Email 格式有誤",
-      "USERNAME_UNIQUE": "此 Email 已註冊過",
-      "PASSWORD_REQUIRED": "密碼為必填欄位",
-      "PASSWORD_MIN_LENGTH": "密碼最小長度為 8 個字元",
-      "PASSWORD_MAX_LENGTH": "密碼最大長度為 50 個字元"
+    "register": {
+      "success": "註冊成功",
+      "username_required": "Email 為必填欄位",
+      "username_max_length": "Email 最大長度為 50 個字元",
+      "username_pattern": "Email 格式有誤",
+      "username_unique": "此 Email 已註冊過",
+      "password_required": "密碼為必填欄位",
+      "password_min_length": "密碼最小長度為 8 個字元",
+      "password_max_length": "密碼最大長度為 50 個字元"
     },
-    "ADD_USER_FEEDBACK": {
-      "SUCCESS": "我們已收到您的回覆",
-      "EMAIL_MAX_LENGTH": "Email 最大長度為 50 個字元",
-      "EMAIL_PATTERN": "Email 格式有誤"
+    "add_user_feedback": {
+      "success": "我們已收到您的回覆",
+      "email_max_length": "Email 最大長度為 50 個字元",
+      "email_pattern": "Email 格式有誤"
     }
   }
 }

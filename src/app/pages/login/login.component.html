@@ -43,7 +43,7 @@
             type="text"
             inputmode="email"
             matInput
-            [formControl]="fcs['username']"
+            [formControl]="fcs['account']"
             maxlength="50"
             required
             [readonly]="loggingIn"
@@ -53,20 +53,20 @@
           <mat-icon matPrefix>email</mat-icon>
 
           <mat-icon
-            *ngIf="fcs['username'].value"
+            *ngIf="fcs['account'].value"
             matSuffix
             class="cursor-pointer"
             [matTooltip]="'LOGIN.CLEAR' | translate"
-            (click)="fcs['username'].reset()"
+            (click)="fcs['account'].reset()"
           >
             clear
           </mat-icon>
 
-          <mat-error *ngIf="fcs['username'].hasError('required')">{{
+          <mat-error *ngIf="fcs['account'].hasError('required')">{{
             "LOGIN.ERROR.USERNAME_REQUIRED" | translate
           }}</mat-error>
 
-          <mat-error *ngIf="fcs['username'].hasError('email')">{{
+          <mat-error *ngIf="fcs['account'].hasError('email')">{{
             "LOGIN.ERROR.USERNAME_EMAIL" | translate
           }}</mat-error>
         </mat-form-field>

@@ -4,7 +4,7 @@ export interface RegisterFCs {
   /**
    * 帳號 (Email)
    */
-  username: FormControl<string>;
+  account: FormControl<string>;
   /**
    * 密碼
    */

@@ -1,17 +1,12 @@
 export const TOKENS = {
   /**
-   * role: X
-   * username: ubestream01
-   * exp: 2100-01-01 00:00
+   * exp: 2100-01-01 0000
    */
-  accessToken:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiWCIsInVzZXJuYW1lIjoidWJlc3RyZWFtMDEiLCJleHAiOjQxMDI0MTYwMDAsImlzcyI6IkNnbWhKd3QiLCJhdWQiOiJDZ21oSnd0In0.ivpN9qmk_ouCjWF0HJ94_qso96eiTS-KHVt73H38heU',
+  token:
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGtsZWFydGhpbmsuY29tIiwiaWF0IjoxNzE3MzA5MzE3LCJleHAiOjQxMDI0MTYwMDB9.SuC2kcNl1ASz52uWv9oMsAUiXjw7t6WJF7ncHB6dq6M',
   /**
-   * role: X
-   * username: ubestream01
-   * exp: 2000-01-01 00:00
+   * exp: 2000-01-01 0000
    */
-  expiredAccessToken:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiWCIsInVzZXJuYW1lIjoidWJlc3RyZWFtMDEiLCJleHAiOjk0NjY1NjAwMCwiaXNzIjoiQ2dtaEp3dCIsImF1ZCI6IkNnbWhKd3QifQ.cL18PnqpO-9AryYqgPadFHuvfLw9Lc1dcJS-eoSKQfY',
-  refreshToken: '',
+  expiredToken:
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGtsZWFydGhpbmsuY29tIiwiaWF0IjoxNzE3MzA5MzE3LCJleHAiOjk0NjY1NjAwMH0.S70_YlCPEg-i25I8DH3XSjWfYawF_fye5Khc3_kP05w',
 };

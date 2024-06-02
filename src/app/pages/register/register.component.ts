@@ -29,9 +29,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { RegisterFCs } from './register.models';
-import { AbstractXService } from '../../api/abstract/abstract-x.service';
+import { AbstractUserService } from '../../api/abstract/abstract-user.service';
 import { BaseAPIResModel } from '../../api/models/base-api.models';
-import { XRegisterReq } from '../../api/models/x/x-register.models';
+import { RegisterReq } from '../../api/models/user/register.models';
 import { AutofocusDirective } from '../../shared/directives/autofocus.directive';
 import { LANG_OPTION_LIST, Lang } from '../../shared/enums/lang.enum';
 import { SnackType } from '../../shared/enums/snack-type.enum';
@@ -71,7 +71,7 @@ export class RegisterComponent implements OnDestroy {
 
   fg = new FormGroup<RegisterFCs>(
     {
-      username: new FormControl('', {
+      account: new FormControl('', {
         nonNullable: true,
         validators: [
           Validators.required,
@@ -99,7 +99,7 @@ export class RegisterComponent implements OnDestroy {
     }
   );
   fcs: RegisterFCs = {
-    username: this.fg.controls['username'],
+    account: this.fg.controls['account'],
     password: this.fg.controls['password'],
     confirmPassword: this.fg.controls['confirmPassword'],
   };
@@ -118,7 +118,7 @@ export class RegisterComponent implements OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private media: MediaMatcher,
     private router: Router,
-    private xService: AbstractXService,
+    private userService: AbstractUserService,
     private snackBarService: SnackBarService,
     public t: TranslateService
   ) {
@@ -140,19 +140,19 @@ export class RegisterComponent implements OnDestroy {
     }
     this.registering = true;
 
-    const { username, password } = this.fv;
-    const req: XRegisterReq = {
-      username,
+    const { account, password } = this.fv;
+    const req: RegisterReq = {
+      account,
       password,
     };
 
-    this.xService
-      .XRegister(req)
+    this.userService
+      .Register(req)
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => (this.registering = false)),
         tap((res) => {
-          this.t.get(res.message).subscribe((message) => {
+          this.t.get(res.msg_key).subscribe((message) => {
             this.snackBarService.add({
               message,
               type: SnackType.Success,
@@ -169,7 +169,7 @@ export class RegisterComponent implements OnDestroy {
   onError(err: BaseAPIResModel<null>): Observable<never> {
     console.error(err);
 
-    this.t.get(err.message).subscribe((message) => {
+    this.t.get(err.msg_key).subscribe((message) => {
       this.snackBarService.add({
         message,
         type: SnackType.Error,
