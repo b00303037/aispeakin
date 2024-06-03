@@ -29,6 +29,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MessageO } from '../stt-streaming.models';
 import { AbstractStreamServerService } from '../../../../api/abstract/abstract-stream-server.service';
 import { BaseAPIResModel } from '../../../../api/models/base-api.models';
+import { AddLogReq } from '../../../../api/models/stream-server/add-log.models';
 import { SurveyLinkDialogComponent } from '../../../../shared/components/survey-link-dialog/survey-link-dialog.component';
 import { RLANG_OPTION_LIST, RLang } from '../../../../shared/enums/r-lang.enum';
 import { MediaQuery } from '../../../../shared/enums/media-query.enum';
@@ -134,18 +135,21 @@ export class RecordingBarComponent implements OnDestroy {
   onStartRecording(): void {
     this.recorderService.startRecording(this.handleText.bind(this));
 
-    this.onAddLog();
+    this.onAddLog('start');
   }
 
   onStopRecording(): void {
     this.recorderService.stopRecording();
 
+    this.onAddLog('end');
     this.openSurveyLinkDialog();
   }
 
-  onAddLog(): void {
+  onAddLog(type: string): void {
+    const req: AddLogReq = { type };
+
     this.streamServerService
-      .AddLog()
+      .AddLog(req)
       .pipe(
         takeUntil(this.destroy$),
         catchError((err) => this.onError(err))

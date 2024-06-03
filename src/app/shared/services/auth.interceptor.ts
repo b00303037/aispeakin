@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
         console.error(err);
 
         let code = BaseAPICode.InternalServerError;
-        let msg_key = 'API.ERROR';
+        let msg_key = 'api.error';
 
         if (err instanceof HttpErrorResponse && err.status === 403) {
           code = BaseAPICode.Forbidden;

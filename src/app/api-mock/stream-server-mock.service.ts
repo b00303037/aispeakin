@@ -3,7 +3,10 @@ import { map, Observable, switchMap, timer } from 'rxjs';
 
 import { BaseApiMockService } from './base-api-mock.service';
 import { AbstractStreamServerService } from '../api/abstract/abstract-stream-server.service';
-import { AddLogRes } from '../api/models/stream-server/add-log.models';
+import {
+  AddLogReq,
+  AddLogRes,
+} from '../api/models/stream-server/add-log.models';
 import { GetAPIKeyRes } from '../api/models/stream-server/get-api-key.models';
 import { BaseAPICode } from '../shared/enums/base-api-code.enum';
 
@@ -15,11 +18,12 @@ export class StreamServerMockService
   implements AbstractStreamServerService
 {
   /* MOCK API */
-  AddLog(): Observable<AddLogRes> {
-    let data: null = null;
+  AddLog(req: AddLogReq): Observable<AddLogRes> {
+    const data = null;
 
     console.log('---');
     console.log('AddLog');
+    console.log(req);
     console.log(data);
 
     const acceptedCodes: Array<BaseAPICode> = [BaseAPICode.OK];
@@ -28,7 +32,7 @@ export class StreamServerMockService
       map(() => ({
         code: BaseAPICode.OK,
         msg: '',
-        msg_key: 'API.SUCCESS',
+        msg_key: 'API.ADD_USER_FEEDBACK.SUCCESS',
         data,
       })),
       switchMap((res) => super.throwNotIn(acceptedCodes, res))

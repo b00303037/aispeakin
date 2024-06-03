@@ -16,7 +16,7 @@ export class BaseApiService {
   private defaultError: BaseAPIResModel<null> = {
     code: BaseAPICode.InternalServerError,
     msg: '',
-    msg_key: 'API.ERROR',
+    msg_key: 'api.error',
     data: null,
   };
 
