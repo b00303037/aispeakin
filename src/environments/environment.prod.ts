@@ -7,7 +7,7 @@ export const environment = {
   wsUrlS7: 'wss://_s7.stt.ubestream.com/wssapi_s7/',
   wsUrl: 'wss://ws.aispeak.in',
 
-  countdownSeconds: 90,
+  countdownSeconds: 60,
 
   baseApiUrl: `https://aispeak.in/api`,
   allowedDomains: ['aispeak.in'],
