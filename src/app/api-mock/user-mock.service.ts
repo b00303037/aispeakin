@@ -30,7 +30,7 @@ export class UserMockService
       map(() => ({
         code: BaseAPICode.OK,
         msg: '',
-        msg_key: 'API.REGISTER.SUCCESS',
+        msg_key: 'api.register.success',
         data,
       })),
       switchMap((res) => super.throwNotIn(acceptedCodes, res))
@@ -54,7 +54,7 @@ export class UserMockService
       map(() => ({
         code: BaseAPICode.OK,
         msg: '',
-        msg_key: 'API.LOGIN.SUCCESS',
+        msg_key: 'api.login.success',
         data,
       })),
       switchMap((res) => super.throwNotIn(acceptedCodes, res))

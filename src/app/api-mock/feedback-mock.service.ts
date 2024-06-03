@@ -28,7 +28,7 @@ export class FeedbackMockService
       map(() => ({
         code: BaseAPICode.OK,
         msg: '',
-        msg_key: 'API.ADD_USER_FEEDBACK.SUCCESS',
+        msg_key: 'api.add_user_feedback.success',
         data,
       })),
       switchMap((res) => super.throwNotIn(acceptedCodes, res))

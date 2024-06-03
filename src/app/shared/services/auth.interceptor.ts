@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         if (err instanceof HttpErrorResponse && err.status === 403) {
           code = BaseAPICode.Forbidden;
-          msg_key = 'API.EXPIRATION';
+          msg_key = 'api.expiration';
 
           this.authService.loggedIn$.next(false);
         }

@@ -32,7 +32,7 @@ export class StreamServerMockService
       map(() => ({
         code: BaseAPICode.OK,
         msg: '',
-        msg_key: 'API.ADD_USER_FEEDBACK.SUCCESS',
+        msg_key: '',
         data,
       })),
       switchMap((res) => super.throwNotIn(acceptedCodes, res))
@@ -53,7 +53,7 @@ export class StreamServerMockService
       map(() => ({
         code: BaseAPICode.OK,
         msg: '',
-        msg_key: 'API.SUCCESS',
+        msg_key: '',
         data,
       })),
       switchMap((res) => super.throwNotIn(acceptedCodes, res))
