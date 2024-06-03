@@ -28,6 +28,7 @@ export class RecorderService {
   };
 
   recording$ = new BehaviorSubject<boolean>(false);
+  recording = false;
 
   private RECONNECT_WAIT_MS_INIT = 500;
   private RECONNECT_WAIT_INC = 500;
@@ -118,11 +119,12 @@ export class RecorderService {
   startRecording(callback: Function): void {
     console.warn('startRecording()');
 
-    if (this.recording$.getValue()) {
+    if (this.recording) {
       return;
     }
 
     this.recording$.next(true);
+    this.recording = true;
 
     if (this.context === undefined) {
       this.initAudioContext()
@@ -160,6 +162,7 @@ export class RecorderService {
     }
 
     this.recording$.next(false);
+    this.recording = false;
   }
 
   private initAudioContext(): Promise<void> {

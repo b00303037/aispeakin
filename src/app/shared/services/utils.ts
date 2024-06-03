@@ -5,7 +5,7 @@ export const tokenGetter: () => string | null = () =>
 
 export function onThemeChange(): void {
   const darkFlag =
-    localStorage['theme'] === 'dark' ||
+    localStorage.getItem('theme') === 'dark' ||
     (!('theme' in localStorage) &&
       window.matchMedia('(prefers-color-scheme: dark)').matches);
 

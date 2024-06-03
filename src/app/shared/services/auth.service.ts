@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { STTStreamingService } from './stt-streaming.service';
 import { tokenGetter } from './utils';
+import { Payload } from '../../api/models/user/jwt.models';
 
 import { environment } from '../../../environments/environment';
 
@@ -11,20 +12,11 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  payload$ = new BehaviorSubject<unknown>(undefined);
+  payload$ = new BehaviorSubject<Payload | undefined>(undefined);
 
   loggedIn$ = new BehaviorSubject<boolean>(this.validateToken());
 
   logging = false;
-
-  private _account: string | undefined;
-
-  get account(): string | undefined {
-    return this._account;
-  }
-  set account(account: string | undefined) {
-    this._account = account;
-  }
 
   constructor(
     private jwtHelperService: JwtHelperService,
@@ -48,13 +40,13 @@ export class AuthService {
     }
 
     try {
-      const payload = this.jwtHelperService.decodeToken(token);
+      const payload = this.jwtHelperService.decodeToken<Payload>(token);
 
       if (this.jwtHelperService.isTokenExpired(token)) {
         return false;
       }
 
-      this.payload$.next(payload);
+      this.payload$.next(payload !== null ? payload : undefined);
     } catch (err) {
       console.error(err);
 
@@ -73,6 +65,5 @@ export class AuthService {
 
     this.payload$.next(undefined);
     this.loggedIn$.next(false);
-    this.account = undefined;
   }
 }

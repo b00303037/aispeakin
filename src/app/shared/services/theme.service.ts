@@ -10,7 +10,7 @@ export class ThemeService {
   theme$: BehaviorSubject<Theme | undefined>;
 
   constructor() {
-    const theme = localStorage['theme'];
+    const theme = localStorage.getItem('theme');
     let _theme: Theme | undefined;
 
     switch (theme) {

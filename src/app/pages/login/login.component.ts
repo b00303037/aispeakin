@@ -138,7 +138,6 @@ export class LoginComponent implements OnDestroy {
 
           if (this.authService.validateToken()) {
             this.authService.loggedIn$.next(true);
-            this.authService.account = account;
 
             this.t.get(res.msg_key).subscribe((message) => {
               this.snackBarService.add({

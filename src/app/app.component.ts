@@ -50,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         tap((_theme) => {
           if (_theme !== undefined) {
-            localStorage['theme'] = _theme;
+            localStorage.setItem('theme', _theme);
           } else {
             localStorage.removeItem('theme');
           }
@@ -65,15 +65,17 @@ export class AppComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         distinctUntilChanged(),
         tap((e) => {
-          localStorage['lang'] = e.lang;
+          localStorage.setItem('lang', e.lang);
         })
       )
       .subscribe();
   }
 
   ngOnInit(): void {
-    const defaultLang = Object.values(Lang).includes(localStorage['lang'])
-      ? localStorage['lang']
+    const defaultLang = Object.values(Lang).includes(
+      localStorage.getItem('lang') as Lang
+    )
+      ? (localStorage.getItem('lang') as Lang)
       : Lang.EN;
 
     this.t.setDefaultLang(defaultLang);

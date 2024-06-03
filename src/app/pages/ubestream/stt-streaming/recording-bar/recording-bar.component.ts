@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   Output,
@@ -13,6 +14,8 @@ import {
   Subject,
   catchError,
   distinctUntilChanged,
+  map,
+  skip,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -34,6 +37,8 @@ import { SurveyLinkDialogComponent } from '../../../../shared/components/survey-
 import { RLANG_OPTION_LIST, RLang } from '../../../../shared/enums/r-lang.enum';
 import { MediaQuery } from '../../../../shared/enums/media-query.enum';
 import { MODE_OBJ, Mode } from '../../../../shared/enums/mode.enum';
+import { AuthService } from '../../../../shared/services/auth.service';
+import { CountdownService } from '../../../../shared/services/countdown.service';
 import { RecorderService } from '../../../../shared/services/recorder.service';
 import { STTStreamingService } from '../../../../shared/services/stt-streaming.service';
 import { i18nSelectMapGenerator } from '../../../../shared/services/utils';
@@ -59,14 +64,17 @@ import { i18nSelectMapGenerator } from '../../../../shared/services/utils';
 export class RecordingBarComponent implements OnDestroy {
   private destroy$ = new Subject<null>();
 
+  main = true;
   @Input() mode!: Mode;
-  @Input() main = true;
   @Output() modeEmit = new EventEmitter<Mode>();
 
   MDQueryMatches?: boolean;
   landscapeQueryMatches?: boolean;
 
   messageList$ = this.STTStreamingService.messageList$;
+  remaining$ = this.countdownService.status$.pipe(
+    map((status) => this.formatTime(status.value))
+  );
 
   modeObj = MODE_OBJ;
   modeMenuItemList = [
@@ -89,6 +97,7 @@ export class RecordingBarComponent implements OnDestroy {
   RLangOptionList = RLANG_OPTION_LIST;
   RLangNameMap = i18nSelectMapGenerator(RLANG_OPTION_LIST, 'value', 'label');
 
+  counting = false;
   recording = false;
 
   constructor(
@@ -97,9 +106,14 @@ export class RecordingBarComponent implements OnDestroy {
     private router: Router,
     private matDialog: MatDialog,
     private streamServerService: AbstractStreamServerService,
+    private authService: AuthService,
+    private countdownService: CountdownService,
     private STTStreamingService: STTStreamingService,
     public recorderService: RecorderService
   ) {
+    this.initCounting();
+    this.loadUsageObj();
+
     this.breakpointObserver
       .observe([MediaQuery.MD, MediaQuery.Landscape])
       .pipe(
@@ -111,13 +125,47 @@ export class RecordingBarComponent implements OnDestroy {
       )
       .subscribe();
 
+    this.countdownService.status$
+      .pipe(
+        takeUntil(this.destroy$),
+        map(({ value }) => value),
+        distinctUntilChanged(),
+        tap((value) => {
+          if (value === 0) {
+            this.onStopRecording();
+          }
+        })
+      )
+      .subscribe();
+
     this.recorderService.recording$
       .pipe(
         takeUntil(this.destroy$),
+        skip(1),
         distinctUntilChanged(),
-        tap((recording) => (this.recording = recording))
+        tap((recording) => (this.recording = recording)),
+        tap((recording) => this.onAddLog(recording ? 'start' : 'end')),
+        tap((recording) => {
+          if (this.counting) {
+            this.countdownService[recording ? 'start' : 'pause']();
+          }
+        })
       )
       .subscribe();
+  }
+
+  initCounting(): void {
+    console.log('--- initCounting ---');
+
+    const adminList = [...Array(20)].map(
+      (v, i) => `ubestream${String(i + 1).padStart(2, '0')}@ubestream.com`
+    );
+    const sub = this.authService.payload$.getValue()?.sub;
+
+    this.counting = sub === undefined || !adminList.includes(sub);
+
+    console.log('帳號:', sub);
+    console.log('限制使用時間:', this.counting);
   }
 
   onSelectMode(mode: Mode): void {
@@ -134,14 +182,11 @@ export class RecordingBarComponent implements OnDestroy {
 
   onStartRecording(): void {
     this.recorderService.startRecording(this.handleText.bind(this));
-
-    this.onAddLog('start');
   }
 
   onStopRecording(): void {
     this.recorderService.stopRecording();
 
-    this.onAddLog('end');
     this.openSurveyLinkDialog();
   }
 
@@ -194,8 +239,68 @@ export class RecordingBarComponent implements OnDestroy {
     return EMPTY;
   }
 
+  formatTime(seconds: number): string {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  loadUsageObj(): void {
+    console.log('--- loadUsageObj ---');
+
+    const sub = this.authService.payload$.getValue()?.sub;
+    const obj = this.getUsageObj();
+
+    const seconds = sub !== undefined ? obj[sub] : undefined;
+
+    console.log('帳號:', sub);
+    console.log('限時:', seconds);
+
+    this.countdownService.reset(seconds);
+  }
+
+  saveUsageObj(): void {
+    console.log('--- saveUsageObj ---');
+
+    const sub = this.authService.payload$.getValue()?.sub;
+
+    if (sub !== undefined) {
+      const obj = this.getUsageObj();
+      const { value } = this.countdownService.status$.getValue();
+
+      obj[sub] = value;
+
+      console.log('帳號:', sub);
+      console.log('限時:', value);
+
+      this.setUsageObj(obj);
+    }
+  }
+
+  getUsageObj(): {
+    [key: string]: number;
+  } {
+    return JSON.parse(localStorage.getItem('stt-streaming-usage') ?? '{}');
+  }
+
+  setUsageObj(obj: { [key: string]: number }): void {
+    localStorage.setItem('stt-streaming-usage', JSON.stringify(obj));
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(null);
     this.destroy$.complete();
+
+    this.saveUsageObj();
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeWindowUnload(event: BeforeUnloadEvent): void {
+    if (this.counting) {
+      this.saveUsageObj();
+
+      event.preventDefault();
+    }
   }
 }

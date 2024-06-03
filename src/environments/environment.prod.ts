@@ -1,7 +1,7 @@
 export const environment = {
   mock: false,
   production: true,
-  version: '0.14',
+  version: '0.15',
 
   wsUrlS6: 'wss://_s6.stt.ubestream.com/wssapi_s6/',
   wsUrlS7: 'wss://_s7.stt.ubestream.com/wssapi_s7/',

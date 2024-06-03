@@ -5,7 +5,7 @@
   <mat-toolbar class="w-page bg-transparent px-2">
     <div class="w-full flex">
       <button
-        *ngIf="main"
+        [class.hidden]="!main"
         type="button"
         mat-button
         color="accent"
@@ -21,14 +21,16 @@
       <button
         class="w-12 h-12 border-4 border-solid border-gray-700 rounded-full flex justify-center items-center dark:border-gray-300"
         type="button"
+        [disabled]="(remaining$ | async) === '00:00'"
         (click)="!recording ? onStartRecording() : onStopRecording()"
       >
         <span
-          [ngClass]="
-            !recording
-              ? 'w-8 h-8 rounded-16'
-              : 'animate-pulse w-5 h-5 rounded-4'
-          "
+          [ngClass]="{
+            'animate-pulse w-5 h-5 rounded-4': recording,
+            'w-8 h-8 rounded-16': !recording,
+            'bg-gray-500': (remaining$ | async) === '00:00',
+            'bg-red-500': (remaining$ | async) !== '00:00',
+          }"
           class="transition-all bg-red-500"
         ></span>
       </button>
@@ -37,8 +39,12 @@
     <div class="w-full flex">
       <span class="grow"></span>
 
+      <span [ngClass]="main && counting && recording ? 'inline' : 'hidden'">{{
+        remaining$ | async
+      }}</span>
+
       <button
-        *ngIf="main"
+        [class.hidden]="!main || (counting && recording)"
         type="button"
         mat-icon-button
         color="accent"
