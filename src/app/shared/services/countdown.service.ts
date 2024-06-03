@@ -13,11 +13,13 @@ import {
   tap,
 } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class CountdownService {
-  private _countdownSeconds = 10;
+  private _countdownSeconds = environment.countdownSeconds;
 
   status$ = new BehaviorSubject({
     state: 'paused',
