@@ -6,6 +6,7 @@ class RelayWorklet extends AudioWorkletProcessor {
     this._stop = false;
     this.port.onmessage = ({ data }) => {
       if (data == "stop") this._stop = true;
+      this.port.postMessage("closed");
     };
   }
 
@@ -16,7 +17,7 @@ class RelayWorklet extends AudioWorkletProcessor {
 
     this.chunks.push(inputChannelData.slice(0));
     this.total += inputChannelData.length;
-    if (this.total >= 8000) {
+    if (this.total >= 4410 * 5) {
       this.port.postMessage(this.chunks);
       this.chunks = [];
       this.total = 0;

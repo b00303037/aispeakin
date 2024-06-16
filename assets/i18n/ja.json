@@ -82,6 +82,7 @@
   },
   "STT_STREAMING": {
     "MAIN_LANG": "主な言語",
+    "DOWNLOAD_CONVERSATION": "会話をダウンロード",
     "CLEAR_CONVERSATION": "内容をクリア",
     "SHARE_FEEDBACK": "フィードバックを共有してください！",
     "NEXT": "次へ",
