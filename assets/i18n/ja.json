@@ -10,6 +10,10 @@
     "DUAL_SIDED": "対面型表示",
     "FACE_TO_FACE": "上下反転式表示"
   },
+  "FILE_TYPE": {
+    "TXT": "テキストファイル (.txt)",
+    "DOC": "Microsoft Word (.doc)"
+  },
   "HEADER": {
     "LOGIN": "ログイン",
     "LOGOUT": "ログアウト",

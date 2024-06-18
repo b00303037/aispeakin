@@ -10,6 +10,10 @@
     "DUAL_SIDED": "Dual-sided",
     "FACE_TO_FACE": "Face-to-face"
   },
+  "FILE_TYPE": {
+    "TXT": "Text file (.txt)",
+    "DOC": "Microsoft Word (.doc)"
+  },
   "HEADER": {
     "LOGIN": "Login",
     "LOGOUT": "Logout",

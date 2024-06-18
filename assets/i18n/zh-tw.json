@@ -10,6 +10,10 @@
     "DUAL_SIDED": "雙面顯示",
     "FACE_TO_FACE": "面對面顯示"
   },
+  "FILE_TYPE": {
+    "TXT": "文字檔案 (.txt)",
+    "DOC": "Microsoft Word (.doc)"
+  },
   "HEADER": {
     "LOGIN": "登入",
     "LOGOUT": "登出",
