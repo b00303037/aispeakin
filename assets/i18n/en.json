@@ -93,6 +93,10 @@
     "PREV": "Previous",
     "SUBMIT": "Submit"
   },
+  "NETWORK": {
+    "ONLINE": "You're back online.",
+    "OFFLINE": "You're offline, please check your connection."
+  },
   "api": {
     "error": "An unexpected error occurred. Please try again later.",
     "expiration": "The login authentication has expired. Please log in again.",
