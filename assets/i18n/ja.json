@@ -11,6 +11,7 @@
     "FACE_TO_FACE": "上下反転式表示"
   },
   "FILE_TYPE": {
+    "JSON": "JSON (.json)",
     "TXT": "テキストファイル (.txt)",
     "DOC": "Microsoft Word (.doc)"
   },

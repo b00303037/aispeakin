@@ -11,6 +11,7 @@
     "FACE_TO_FACE": "Face-to-face"
   },
   "FILE_TYPE": {
+    "JSON": "JSON (.json)",
     "TXT": "Text file (.txt)",
     "DOC": "Microsoft Word (.doc)"
   },

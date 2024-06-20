@@ -11,6 +11,7 @@
     "FACE_TO_FACE": "面對面顯示"
   },
   "FILE_TYPE": {
+    "JSON": "JSON (.json)",
     "TXT": "文字檔案 (.txt)",
     "DOC": "Microsoft Word (.doc)"
   },
